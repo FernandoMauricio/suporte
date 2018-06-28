@@ -7,7 +7,7 @@ use yii\helpers\Html;
 /* @var $model app\models\solicitacao\Solicitacao */
 
 $this->title = 'Nova Solicitação';
-$this->params['breadcrumbs'][] = ['label' => 'Listagem dos Suportes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Listagem de Suportes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="solicitacao-create">

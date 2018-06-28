@@ -41,7 +41,7 @@ class Situacao extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'sit_descricao' => 'Sit Descricao',
+            'sit_descricao' => 'Situação',
         ];
     }
 

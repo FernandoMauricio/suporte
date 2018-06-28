@@ -7,23 +7,12 @@ use yii\widgets\DetailView;
 /* @var $model app\models\solicitacao\Solicitacao */
 
 $this->title = $model->solic_id;
-$this->params['breadcrumbs'][] = ['label' => 'Listagem dos Suportes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Listagem de Suportes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="solicitacao-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Atualizar', ['update', 'id' => $model->solic_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Deletar', ['delete', 'id' => $model->solic_id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
 
     <?= DetailView::widget([
         'model' => $model,
@@ -33,17 +22,27 @@ $this->params['breadcrumbs'][] = $this->title;
             'solic_patrimonio',
             'solic_desc_equip',
             'solic_desc_serv:ntext',
-            'solic_unidade_solicitante',
-            'solic_usuario_solicitante',
+            'unidade.uni_nomeabreviado',
+            'usuario.usu_nomeusuario',
             'solic_data_solicitacao',
             'solic_data_prevista',
             'solic_data_finalizacao',
             'solic_prioridade',
-            'solic_usuario_suporte',
-            'solic_sistema_id',
+            'tecnico.usu_nomeusuario',
+            'categoriaSistema.sist_descricao',
             'solic_tipo',
-            'situacao_id',
+            'situacao.sit_descricao',
         ],
+    ]) ?>
+
+    <?= $this->render('forum/view', [
+        'forum' => $forum,
+        'modelsForums' => $modelsForums,
+    ]) ?>
+
+    <?= $this->render('forum/_form', [
+        'forum' => $forum,
+        'situacao' => $situacao,
     ]) ?>
 
 </div>

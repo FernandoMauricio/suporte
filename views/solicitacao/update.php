@@ -6,7 +6,7 @@ use yii\helpers\Html;
 /* @var $model app\models\solicitacao\Solicitacao */
 
 $this->title = 'Atualizar Solicitação: ' . $model->solic_id;
-$this->params['breadcrumbs'][] = ['label' => 'Listagem dos Suportes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Listagem de Suportes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->solic_id, 'url' => ['view', 'id' => $model->solic_id]];
 $this->params['breadcrumbs'][] = 'Atualizar';
 ?>

@@ -9,7 +9,7 @@ use yii\bootstrap\Modal;
 /* @var $searchModel app\models\solicitacao\SolicitacaoSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Listagem dos Suportes';
+$this->title = 'Listagem de Suportes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="solicitacao-index">
@@ -41,9 +41,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'solic_id',
             'solic_titulo',
-            'solic_patrimonio',
-            'solic_desc_equip',
-            'solic_desc_serv:ntext',
+            // 'solic_patrimonio',
+            // 'solic_desc_equip',
+            // 'solic_desc_serv:ntext',
             //'solic_unidade_solicitante',
             //'solic_usuario_solicitante',
             //'solic_data_solicitacao',

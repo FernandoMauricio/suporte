@@ -4,6 +4,10 @@ namespace app\controllers;
 
 use Yii;
 use app\models\base\Sistemas;
+use app\models\base\Situacao;
+use app\models\base\Usuario;
+use app\models\base\Colaborador;
+use app\models\solicitacao\Forum;
 use app\models\solicitacao\Solicitacao;
 use app\models\solicitacao\SolicitacaoSearch;
 use yii\web\Controller;
@@ -53,9 +57,29 @@ class SolicitacaoController extends Controller
      */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $session = Yii::$app->session;
+        $model = $this->findModel($id);
+        $modelsForums = $model->forums;
+        $forum = new Forum();
+
+        $forum->solicitacao_id = $model->solic_id;
+        $forum->for_usuario_id = $session['sess_codusuario'];
+        $forum->for_data = date('Y-m-d H:i');
+
+        $situacao = Situacao::find()->all();
+
+
+        if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
+            
+            return $this->redirect(['view', 'id' => $model->solic_id]);
+        } else { 
+            return $this->render('view', [
+                'model' => $model,
+                'modelsForums' => $modelsForums,
+                'forum' => $forum,
+                'situacao' => $situacao,
+            ]);
+        }
     }
 
     public function actionGerarSuporte()
@@ -77,10 +101,16 @@ class SolicitacaoController extends Controller
      */
     public function actionCreate()
     {
+        $session = Yii::$app->session;
         $model = new Solicitacao();
 
         $model->solic_tipo = $_GET['solic_tipo']; //tipo de solicitação de suporte selecionado
-
+        $model->solic_unidade_solicitante = $session['sess_codunidade'];
+        $model->solic_usuario_solicitante = $session['sess_codusuario'];
+        $model->solic_data_solicitacao = date('Y-m-d');
+        $model->solic_prioridade = 'Normal';
+        $model->situacao_id = 1;
+        
         $sistemas = Sistemas::find()->orderBy('sist_descricao')->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
