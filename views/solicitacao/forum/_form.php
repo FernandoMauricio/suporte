@@ -30,7 +30,7 @@ use kartik\datecontrol\DateControl;
             ?>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3">
         	<?= $form->field($forum, 'for_usuario_suporte')->widget(Select2::classname(), [
 	                'data' =>  [219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'],
 	                'options' => ['placeholder' => 'Alterar técnico... '],
@@ -41,7 +41,7 @@ use kartik\datecontrol\DateControl;
             ?>
         </div>
 
-        <div class="col-md-2">
+        <div class="col-md-3">
         	<?= $form->field($forum, 'for_data_prevista')->widget(DateControl::classname(), [
                     'type'=>DateControl::FORMAT_DATE,
                     'ajaxConversion'=>false,
@@ -51,6 +51,17 @@ use kartik\datecontrol\DateControl;
                             'autoclose' => true
                         ],
                     ]
+                ]); 
+            ?>
+        </div>
+
+        <div class="col-md-2">
+            <?= $form->field($forum, 'for_prioridade')->widget(Select2::classname(), [
+                    'data' =>  ['Normal' => 'Normal', 'Priorizada' => 'Priorizada'],
+                    'options' => ['placeholder' => 'Alterar Prioridade... '],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
                 ]); 
             ?>
         </div>

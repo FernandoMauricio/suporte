@@ -60,37 +60,32 @@ class SolicitacaoController extends Controller
         $session = Yii::$app->session;
         $model = $this->findModel($id);
         $modelsForums = $model->forums;
+
+            return $this->render('view', [
+                'model' => $model,
+                'modelsForums' => $modelsForums,
+            ]);
+    }
+
+    public function actionInserirMensagem($id)
+    {
+        $session = Yii::$app->session;
+        $model = $this->findModel($id);
         $forum = new Forum();
 
         $forum->solicitacao_id = $model->solic_id;
         $forum->for_usuario_id = $session['sess_codusuario'];
         $forum->for_data = date('Y-m-d H:i');
-
+        
         $situacao = Situacao::find()->all();
 
-
-        if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
-            
-            return $this->redirect(['view', 'id' => $model->solic_id]);
-        } else { 
-            return $this->render('view', [
-                'model' => $model,
-                'modelsForums' => $modelsForums,
-                'forum' => $forum,
-                'situacao' => $situacao,
-            ]);
-        }
-    }
-
-    public function actionGerarSuporte()
-    {
-        $model = new Solicitacao();
-
-        if ($model->load(Yii::$app->request->post())) {
-                return $this->redirect(['create', 'solic_tipo' => $model->solic_tipo]);
+        if ($forum->load(Yii::$app->request->post())) {
+                return $this->redirect(['view', 'solic_tipo' => $forum->solic_tipo]);
             }
-            return $this->renderAjax('gerar-suporte', [
+            return $this->renderAjax('forum/_form', [
+                'forum' => $forum,
                 'model' => $model,
+                'situacao' => $situacao,
             ]);
     }
 
