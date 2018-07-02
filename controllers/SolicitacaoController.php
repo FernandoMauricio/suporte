@@ -79,8 +79,18 @@ class SolicitacaoController extends Controller
         
         $situacao = Situacao::find()->all();
 
-        if ($forum->load(Yii::$app->request->post())) {
-                return $this->redirect(['view', 'solic_tipo' => $forum->solic_tipo]);
+        if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
+
+        	if($forum->save()) {
+        		if(!empty($forum->situacao_id)) { $model->situacao_id = $forum->situacao_id; }
+        		if(!empty($forum->for_usuario_suporte)) { $model->solic_usuario_suporte = $forum->for_usuario_suporte; }
+        		if(!empty($forum->for_data_prevista)) { $model->solic_data_prevista = $forum->for_data_prevista; }
+        		if(!empty($forum->for_prioridade)) { $model->solic_prioridade = $forum->for_prioridade; }
+				$model->save();
+			}
+
+        	Yii::$app->session->setFlash('success', '<b>SUCESSO! </b> Suporte Atualizado!');
+                return $this->redirect(['view', 'id' => $model->solic_id]);
             }
             return $this->renderAjax('forum/_form', [
                 'forum' => $forum,
