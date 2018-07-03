@@ -40,6 +40,7 @@ class SolicitacaoController extends Controller
      */
     public function actionIndex()
     {
+        $this->layout = 'main-full';
         $searchModel = new SolicitacaoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

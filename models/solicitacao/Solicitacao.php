@@ -89,9 +89,9 @@ class Solicitacao extends \yii\db\ActiveRecord
             'solic_data_prevista' => 'Data Prevista',
             'solic_data_finalizacao' => 'Data da Finalização',
             'solic_prioridade' => 'Prioridade',
-            'solic_usuario_suporte' => 'Usuario Suporte',
+            'solic_usuario_suporte' => 'Técnico',
             'solic_sistema_id' => 'Categoria',
-            'solic_tipo' => 'Tipo de Solicitação',
+            'solic_tipo' => 'Tipo',
             'situacao_id' => 'Situacao ID',
         ];
     }
