@@ -68,6 +68,18 @@ class SolicitacaoController extends Controller
             ]);
     }
 
+    public function actionGerarSuporte()
+    {
+        $model = new Solicitacao();
+ 
+        if ($model->load(Yii::$app->request->post())) {
+                return $this->redirect(['create', 'solic_tipo' => $model->solic_tipo]);
+            }
+            return $this->renderAjax('gerar-suporte', [
+                'model' => $model,
+            ]);
+    }
+
     public function actionInserirMensagem($id)
     {
         $session = Yii::$app->session;

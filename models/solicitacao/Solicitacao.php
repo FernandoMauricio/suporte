@@ -33,6 +33,7 @@ use app\models\base\Unidade;
  */
 class Solicitacao extends \yii\db\ActiveRecord
 {
+    public $countDias;
     /**
      * {@inheritdoc}
      */
@@ -50,7 +51,7 @@ class Solicitacao extends \yii\db\ActiveRecord
             [['solic_patrimonio', 'solic_unidade_solicitante', 'solic_usuario_solicitante', 'solic_usuario_suporte', 'solic_sistema_id', 'situacao_id'], 'integer'],
             [['solic_desc_serv'], 'string'],
             [['solic_titulo', 'solic_desc_serv', 'solic_unidade_solicitante', 'solic_usuario_solicitante', 'solic_data_solicitacao', 'solic_tipo', 'situacao_id'], 'required'],
-            [['solic_data_solicitacao', 'solic_data_prevista', 'solic_data_finalizacao'], 'safe'],
+            [['solic_data_solicitacao', 'solic_data_prevista', 'solic_data_finalizacao', 'countDias'], 'safe'],
             [['solic_titulo'], 'string', 'max' => 100],
             [['solic_desc_equip'], 'string', 'max' => 255],
             [['solic_prioridade'], 'string', 'max' => 20],
@@ -92,7 +93,8 @@ class Solicitacao extends \yii\db\ActiveRecord
             'solic_usuario_suporte' => 'Técnico',
             'solic_sistema_id' => 'Categoria',
             'solic_tipo' => 'Tipo',
-            'situacao_id' => 'Situacao ID',
+            'situacao_id' => 'Situação',
+            'countDias' => 'Dias Restantes',
         ];
     }
 
