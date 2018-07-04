@@ -13,6 +13,7 @@ use app\models\solicitacao\SolicitacaoSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Json;
 
 /**
  * SolicitacaoController implements the CRUD actions for Solicitacao model.
@@ -41,9 +42,46 @@ class SolicitacaoController extends Controller
     public function actionIndex()
     {
         $this->layout = 'main-full';
+        $session = Yii::$app->session;
         $searchModel = new SolicitacaoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort = ['defaultOrder' => ['solic_id'=>SORT_DESC]];
 
+        if (Yii::$app->request->post('hasEditable')) {
+            // instantiate your Solicitacao model for saving
+            $solicitacao = Yii::$app->request->post('editableKey');
+            $model = Solicitacao::findOne($solicitacao);
+
+            // store a default json response as desired by editable
+            $out = Json::encode(['output'=>'', 'message'=>'']);
+
+            $posted = current($_POST['Solicitacao']);
+            $post = ['Solicitacao' => $posted];
+
+            // load model like any single model validation
+            if ($model->load($post)) {
+                // can save model or do something before saving model
+                $model->save(false);
+                $output = '';
+                $out = Json::encode(['output'=>$output, 'message'=>'']);
+
+                //Instancia o fórum para inserir os logs de alterações na solicitação
+                $forum = new Forum();
+                $forum->solicitacao_id = $model->solic_id;
+                $forum->for_usuario_id = $session['sess_codusuario'];
+                $forum->for_data = date('Y-m-d H:i');
+                if(!empty($posted['situacao_id'])) { $forum->situacao_id = $model->situacao_id; }
+                if(!empty($posted['solic_usuario_suporte'])) { $forum->for_usuario_suporte = $model->solic_usuario_suporte; }
+                if(!empty($posted['solic_data_prevista'])) { $forum->for_data_prevista = $model->solic_data_prevista; }
+                if(!empty($posted['solic_prioridade'])) { $forum->for_prioridade = $model->solic_prioridade; }
+                $forum->save(false);
+            }
+            // return ajax json encoded response and exit
+            echo $out;
+
+            Yii::$app->session->setFlash('info', '<b>SUCESSO!</b> Técnico alterado para <b>' .$model->tecnico->usu_nomeusuario.'!</b>');
+            return $this->redirect(['index']);
+        }
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

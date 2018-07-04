@@ -133,22 +133,33 @@ $gridColumns = [
     ],
 
     [
-        'attribute'=>'solic_usuario_suporte', 
-        'width'=>'8%',
+        'class' => 'kartik\grid\EditableColumn',
+        'attribute' => 'solic_usuario_suporte',
+        'width'=>'10%',
         'value'=>function ($model, $key, $index, $widget) { 
             return $model->solic_usuario_suporte != NULL ? $model->tecnico->usu_nomeusuario : '' ;
         },
+        'readonly'=>function($model, $key, $index, $widget) {
+            return (!$model->solic_usuario_suporte); // do not allow editing of inactive records
+        },
         'filterType'=>GridView::FILTER_SELECT2,
-        'filter'=>ArrayHelper::map(Solicitacao::find()->select(['solic_usuario_suporte', 'usu_nomeusuario'])->distinct()->innerJoin('db_base.usuario_usu', 'solic_usuario_suporte = usu_codusuario')->asArray()->all(), 'solic_usuario_suporte', 'usu_nomeusuario'),
-        'filterInputOptions'=>['placeholder'=>'Técnico...'],
+        'filter'=>[219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'], 
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
+            'filterInputOptions'=>['placeholder'=>'Técnico...'],
+        //CAIXA DE ALTERAÇÕES DOS TÉCNICOS
+        'editableOptions' => [
+            'header' => 'Técnico',
+            'data'=>[219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'],
+            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
+        ],          
     ],
 
     [
+        'class' => 'kartik\grid\EditableColumn',
         'attribute'=>'situacao_id', 
-        'width'=>'10%',
+        'width'=>'15%',
         'value'=>function ($model, $key, $index, $widget) { 
             return $model->situacao_id != NULL ? $model->situacao->sit_descricao : '' ;
         },
@@ -158,6 +169,12 @@ $gridColumns = [
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
+        //CAIXA DE ALTERAÇÕES DOS TÉCNICOS
+        'editableOptions' => [
+            'header' => 'Situação',
+            'data'=>ArrayHelper::map(Situacao::find()->select(['id', 'sit_descricao'])->asArray()->all(), 'id', 'sit_descricao'),
+            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
+        ], 
     ],
 
     [
