@@ -80,7 +80,7 @@ class SolicitacaoController extends Controller
             // return ajax json encoded response and exit
             echo $out;
 
-            Yii::$app->session->setFlash('info', '<b>SUCESSO!</b> Técnico alterado para <b>' .$model->tecnico->usu_nomeusuario.'!</b>');
+            Yii::$app->session->setFlash('info', '<b>SUCESSO!</b> Informações Atualizadas!</b>');
             return $this->redirect(['index']);
         }
         return $this->render('index', [

@@ -103,18 +103,34 @@ $gridColumns = [
     //'solic_data_finalizacao',
 
     [
-        'attribute' => 'solic_data_prevista',
+        'class'=>'kartik\grid\EditableColumn',
+        'attribute'=>'solic_data_prevista',
+        'width' => '8%', 
+        'hAlign'=>'center',
+        'vAlign'=>'middle',
         'format' => ['date', 'php:d/m/Y'],
-        'width' => '8%',
-        'hAlign' => 'center',
         'filter'=> DatePicker::widget([
         'model' => $searchModel, 
         'attribute' => 'solic_data_prevista',
         'pluginOptions' => [
-             'autoclose'=>true,
-             'format' => 'yyyy-mm-dd',
+            'autoclose'=>true,
+            'format' => 'yyyy-mm-dd',
             ]
-        ])
+        ]),
+        'editableOptions'=>[
+            'inputType'=>\kartik\editable\Editable::INPUT_WIDGET,
+            'widgetClass'=> 'kartik\datecontrol\DateControl',
+            'options'=>[
+                'type'=>\kartik\datecontrol\DateControl::FORMAT_DATE,
+                'displayFormat'=>'dd/MM/yyyy',
+                'saveFormat'=>'php:Y-m-d',
+                'options'=>[
+                    'pluginOptions'=>[
+                        'autoclose'=>true
+                    ]
+                ]
+            ]
+        ],
     ],
 
     [
@@ -139,9 +155,9 @@ $gridColumns = [
         'value'=>function ($model, $key, $index, $widget) { 
             return $model->solic_usuario_suporte != NULL ? $model->tecnico->usu_nomeusuario : '' ;
         },
-        'readonly'=>function($model, $key, $index, $widget) {
-            return (!$model->solic_usuario_suporte); // do not allow editing of inactive records
-        },
+        // 'readonly'=>function($model, $key, $index, $widget) {
+        //     return (!$model->solic_usuario_suporte); // do not allow editing of inactive records
+        // },
         'filterType'=>GridView::FILTER_SELECT2,
         'filter'=>[219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'], 
         'filterWidgetOptions'=>[
