@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
+use kartik\file\FileInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\solicitacao\Solicitacao */
@@ -12,7 +13,7 @@ use kartik\select2\Select2;
 
 <div class="solicitacao-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
 <div class="panel panel-primary">
     <div class="panel-heading">
@@ -48,8 +49,17 @@ use kartik\select2\Select2;
         
         <div class="row">
             <div class="col-md-12">
+                <?= $form->field($model, 'file[]')->widget(FileInput::classname(), [
+                        'options' => ['multiple' => true],
+                        'pluginOptions' => [
+                            'language' => 'pt-BR',
+                            'showRemove'=> false,
+                            'showUpload'=> false,
+                        ],
+                    ]);
+                ?>
             </div>
-        </div>
+        </div> 
 
         <div class="row">
             <div class="col-md-12">
@@ -58,24 +68,6 @@ use kartik\select2\Select2;
 
     </div>
 </div>
-
-    <?= $form->field($model, 'solic_unidade_solicitante')->textInput() ?>
-
-    <?= $form->field($model, 'solic_usuario_solicitante')->textInput() ?>
-
-    <?= $form->field($model, 'solic_data_solicitacao')->textInput() ?>
-
-    <?= $form->field($model, 'solic_data_prevista')->textInput() ?>
-
-    <?= $form->field($model, 'solic_data_finalizacao')->textInput() ?>
-
-    <?= $form->field($model, 'solic_prioridade')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'solic_usuario_suporte')->textInput() ?>
-
-    <?= $form->field($model, 'situacao_id')->textInput() ?>
-
-    <?= $form->field($model, 'solic_tipo')->hiddenInput()->label(false); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

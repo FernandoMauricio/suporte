@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
 use kartik\datecontrol\DateControl;
+use kartik\file\FileInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Forum */
@@ -13,7 +14,7 @@ use kartik\datecontrol\DateControl;
 
 <div class="forum-form">
 
-<?php $form = ActiveForm::begin(); ?>
+<?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
 <?php echo $form->errorSummary($forum); ?> 
 
@@ -71,6 +72,20 @@ use kartik\datecontrol\DateControl;
     <div class="row">
         <div class="col-md-12"><?= $form->field($forum, 'for_mensagem')->textarea(['rows' => 6]) ?></div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <?= $form->field($model, 'file[]')->widget(FileInput::classname(), [
+                    'options' => ['multiple' => true],
+                    'pluginOptions' => [
+                        'language' => 'pt-BR',
+                        'showRemove'=> false,
+                        'showUpload'=> false,
+                    ],
+                ]);
+            ?>
+        </div>
+    </div> 
 
     <div class="form-group">
     	<?= Html::submitButton($forum->isNewRecord ? 'Enviar Mensagem' : 'Enviar Mensagem', ['class' => $forum->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

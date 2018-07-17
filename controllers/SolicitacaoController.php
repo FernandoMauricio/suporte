@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
+use yii\web\UploadedFile;
 
 /**
  * SolicitacaoController implements the CRUD actions for Solicitacao model.
@@ -131,7 +132,18 @@ class SolicitacaoController extends Controller
         $situacao = Situacao::find()->all();
 
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
-
+            ///--------salva os anexos
+            $model->file = UploadedFile::getInstances($model, 'file');
+            $subdiretorio = "uploads/solicitacoes/" . $model->solic_id;
+            if(!file_exists($subdiretorio)) {
+                if(!mkdir($subdiretorio, 0777, true));
+            }
+            if ($model->file && $model->validate()) {
+                foreach ($model->file as $file) {
+                    $file->saveAs($subdiretorio.'/'. $file->baseName . '.' . $file->extension);
+                    $model->save();
+                    }
+            }
         	if($forum->save()) {
         		if(!empty($forum->situacao_id)) { $model->situacao_id = $forum->situacao_id; }
         		if(!empty($forum->for_usuario_suporte)) { $model->solic_usuario_suporte = $forum->for_usuario_suporte; }
@@ -170,6 +182,18 @@ class SolicitacaoController extends Controller
         $sistemas = Sistemas::find()->orderBy('sist_descricao')->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            ///--------salva os anexos
+            $model->file = UploadedFile::getInstances($model, 'file');
+            $subdiretorio = "uploads/solicitacoes/" . $model->solic_id;
+            if(!file_exists($subdiretorio)) {
+                if(!mkdir($subdiretorio, 0777, true));
+            }
+            if ($model->file && $model->validate()) {
+                foreach ($model->file as $file) {
+                    $file->saveAs($subdiretorio.'/'. $file->baseName . '.' . $file->extension);
+                    $model->save();
+                    }
+            }
             return $this->redirect(['view', 'id' => $model->solic_id]);
         }
 

@@ -34,6 +34,8 @@ use app\models\base\Unidade;
 class Solicitacao extends \yii\db\ActiveRecord
 {
     public $countDias;
+    public $file;
+
     /**
      * {@inheritdoc}
      */
@@ -70,6 +72,7 @@ class Solicitacao extends \yii\db\ActiveRecord
                     return $('#solicitacao-solic_tipo').val() == 'Sistemas';
                 }"
             ],
+            [['file'], 'file', 'maxFiles' => 10, 'maxSize' => 1024 * 1024 * 16, 'tooBig' => 'O arquivo é grande demais. Seu tamanho não pode exceder 16MB.','checkExtensionByMimeType'=>false],
         ];
     }
 
@@ -95,6 +98,7 @@ class Solicitacao extends \yii\db\ActiveRecord
             'solic_tipo' => 'Tipo',
             'situacao_id' => 'Situação',
             'countDias' => 'Dias Restantes',
+            'file' => 'Arquivos',
         ];
     }
 

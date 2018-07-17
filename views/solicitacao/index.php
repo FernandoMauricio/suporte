@@ -184,7 +184,11 @@ $gridColumns = [
                 $data_inicio = new DateTime(date('Y-m-d'));
                 $data_fim = new DateTime($model->solic_data_prevista);
                 $dateInterval = $data_inicio->diff($data_fim);
-            return $dateInterval->format("%r%a") < '-0' ? 'Atrasado' : $dateInterval->format("%r%a");
+            if($model->situacao_id != 6 && $model->situacao_id != 7) { // QUANDO FOR DIFERENTE DA SOLICIAÇÃO ATENDIDA
+                return $dateInterval->format("%r%a") < '-0' ? 'Atrasado' : $dateInterval->format("%r%a");
+            }else{
+                return '-';
+            }
         },
     ],
 
@@ -220,11 +224,14 @@ $gridColumns = [
         $data_inicio = new DateTime(date('Y-m-d'));
         $data_fim = new DateTime($model->solic_data_prevista);
         $dateInterval = $data_inicio->diff($data_fim);
-
-        if(isset($model->solic_data_prevista) && $dateInterval->format("%r%a") < '-0') {
-            return['class'=>'danger'];                        
+        if ($model->situacao_id == 6) {
+            return['class'=>'success'];                       
         }else if (isset($model->solic_data_prevista) && $dateInterval->format("%r%a") == 0) {
             return['class'=>'warning'];
+        }else if ($model->situacao_id == 7) {
+            return['class'=>'info'];
+        }else if(isset($model->solic_data_prevista) && $dateInterval->format("%r%a") < '-0') {
+            return['class'=>'danger']; 
         }
     },
     'beforeHeader'=>[
