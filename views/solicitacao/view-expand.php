@@ -10,7 +10,11 @@ use yii\bootstrap\Modal;
 
 ?>
 <div class="solicitacao-view">
-
+    <div class="panel-body">
+        <div class="row">
+            <h5><span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%"><?= $model->situacao->sit_descricao; ?></span></small></span></h5>
+        </div>
+    </div>
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Detalhes do Suporte</h3>
@@ -23,7 +27,6 @@ use yii\bootstrap\Modal;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'solic_id',
             'solic_titulo',
             'solic_patrimonio',
             'solic_desc_equip',
@@ -41,12 +44,6 @@ use yii\bootstrap\Modal;
             'solic_data_finalizacao',
 
             [
-                'attribute' => 'solic_prioridade',
-                'format' => 'raw',
-                'value' => $model->solic_prioridade == 'Normal' ? '<span class="label label-success" style="font-size:90%">'.$model->solic_prioridade.'</span>' : '<span class="label label-danger" style="font-size:90%">'.$model->solic_prioridade.'</span>',
-            ],
-
-            [
                 'label' => 'Técnico Responsável',
                 'attribute' => 'tecnico.usu_nomeusuario',
             ],
@@ -57,7 +54,6 @@ use yii\bootstrap\Modal;
             ], 
 
             'solic_tipo',
-            'situacao.sit_descricao',
         ],
     ]) ?>
 

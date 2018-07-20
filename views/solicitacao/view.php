@@ -14,13 +14,18 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="solicitacao-view">
 
-    <h2><?= 'Suporte: '. Html::encode($this->title) ?></h2>
+    <h2><?= $model->solic_prioridade == 'Normal' ? 
+        'Suporte: '. Html::encode($this->title) . ' <small><span class="label label-default">'.$model->solic_prioridade.'</span></small>' : 
+        'Suporte: '. Html::encode($this->title) . ' <small><span class="label label-danger">'.$model->solic_prioridade.'</span></small>' 
+        ?>
+    </h2>
 
     <p>
         <?= Html::button('Atualizar', ['value'=> Url::to(['inserir-mensagem', 'id' => $model->solic_id]), 'class' => 'btn btn-primary', 'id'=>'modalButton']) ?>
+        <span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%"><?= $model->situacao->sit_descricao; ?></span></small></span>
     </p>
 
- <?php
+<?php
     Modal::begin([
         'options' => ['tabindex' => false ], // important for Select2 to work properly
         'clientOptions' => ['backdrop' => 'static', 'keyboard' => true],
@@ -43,7 +48,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'solic_id',
             'solic_titulo',
             'solic_patrimonio',
             'solic_desc_equip',
@@ -61,12 +65,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'solic_data_finalizacao',
 
             [
-                'attribute' => 'solic_prioridade',
-                'format' => 'raw',
-                'value' => $model->solic_prioridade == 'Normal' ? '<span class="label label-success" style="font-size:90%">'.$model->solic_prioridade.'</span>' : '<span class="label label-danger" style="font-size:90%">'.$model->solic_prioridade.'</span>',
-            ],
-
-            [
                 'label' => 'Técnico Responsável',
                 'attribute' => 'tecnico.usu_nomeusuario',
             ],
@@ -77,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
 
             'solic_tipo',
-            'situacao.sit_descricao',
+            //'situacao.sit_descricao',
 
             [
                 'attribute' => 'file',

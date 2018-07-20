@@ -138,7 +138,7 @@ $gridColumns = [
         'width'=>'5%',
         'format' => 'raw',
         'value' => function ($model, $key, $index, $widget) { 
-            return $model->solic_prioridade == 'Normal' ? '<span class="label label-success">'.$model->solic_prioridade.'</span>' : '<span class="label label-danger">'.$model->solic_prioridade.'</span>'; 
+            return $model->solic_prioridade == 'Normal' ? '<span class="label label-default">'.$model->solic_prioridade.'</span>' : '<span class="label label-danger">'.$model->solic_prioridade.'</span>'; 
         },
         'filterType'=>GridView::FILTER_SELECT2,
         'filter'=>['Normal' => 'Normal', 'Priorizada' => 'Priorizada'] ,
