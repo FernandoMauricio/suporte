@@ -164,3 +164,18 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.label-solicitacao-view {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-weight: normal;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+  background-color: #777;
+  margin-left:4px;
+}

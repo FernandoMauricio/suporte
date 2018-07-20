@@ -153,7 +153,7 @@ $gridColumns = [
         'attribute' => 'solic_usuario_suporte',
         'width'=>'10%',
         'value'=>function ($model, $key, $index, $widget) { 
-            return $model->solic_usuario_suporte != NULL ? $model->tecnico->usu_nomeusuario : '' ;
+            return $model->solic_usuario_suporte != NULL ? ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)) : '' ;
         },
         // 'readonly'=>function($model, $key, $index, $widget) {
         //     return (!$model->solic_usuario_suporte); // do not allow editing of inactive records

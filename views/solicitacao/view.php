@@ -12,18 +12,23 @@ $this->title = $model->solic_id;
 $this->params['breadcrumbs'][] = ['label' => 'Listagem de Suportes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+
 <div class="solicitacao-view">
 
     <h2><?= $model->solic_prioridade == 'Normal' ? 
-        'Suporte: '. Html::encode($this->title) . ' <small><span class="label label-default">'.$model->solic_prioridade.'</span></small>' : 
-        'Suporte: '. Html::encode($this->title) . ' <small><span class="label label-danger">'.$model->solic_prioridade.'</span></small>' 
+        'Suporte: '. Html::encode($this->title) . ' <small><span class="label-solicitacao-view">'.$model->solic_prioridade.'</span><span class="label-solicitacao-view">'.$model->solic_tipo.'</span></small>'  : 
+        'Suporte: '. Html::encode($this->title) . ' <small><span class="label label-danger">'.$model->solic_prioridade.'</span><span class="label-solicitacao-view">'.$model->solic_tipo.'</span></small>' 
         ?>
     </h2>
 
     <p>
         <?= Html::button('Atualizar', ['value'=> Url::to(['inserir-mensagem', 'id' => $model->solic_id]), 'class' => 'btn btn-primary', 'id'=>'modalButton']) ?>
-        <span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%"><?= $model->situacao->sit_descricao; ?></span></small></span>
+        <span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%;font-weight:normal"><?= $model->situacao->sit_descricao; ?></span></small></span>
     </p>
+
+    <p>
+        <span class="pull-right"><b>Técnico Responsável: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)); ?></span></small></span>
+    </p><br><br>
 
 <?php
     Modal::begin([
@@ -65,17 +70,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'solic_data_finalizacao',
 
             [
-                'label' => 'Técnico Responsável',
-                'attribute' => 'tecnico.usu_nomeusuario',
-            ],
-
-            [
                 'label' => 'Categoria',
                 'attribute' => 'categoriaSistema.sist_descricao',
             ],
-
-            'solic_tipo',
-            //'situacao.sit_descricao',
 
             [
                 'attribute' => 'file',
