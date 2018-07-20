@@ -89,6 +89,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'label' => 'Categoria',
                 'attribute' => 'categoriaSistema.sist_descricao',
+                'visible' => (!empty($model->solic_sistema_id)),
             ],
 
             [

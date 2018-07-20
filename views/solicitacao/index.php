@@ -101,7 +101,6 @@ $gridColumns = [
     //'solic_usuario_solicitante',
     //'solic_data_solicitacao',
     //'solic_data_finalizacao',
-
     [
         'class'=>'kartik\grid\EditableColumn',
         'attribute'=>'solic_data_prevista',
@@ -134,6 +133,7 @@ $gridColumns = [
     ],
 
     [
+        'class' => 'kartik\grid\EditableColumn',
         'attribute'=>'solic_prioridade', 
         'width'=>'5%',
         'format' => 'raw',
@@ -141,10 +141,15 @@ $gridColumns = [
             return $model->solic_prioridade == 'Normal' ? '<span class="label label-default">'.$model->solic_prioridade.'</span>' : '<span class="label label-danger">'.$model->solic_prioridade.'</span>'; 
         },
         'filterType'=>GridView::FILTER_SELECT2,
-        'filter'=>['Normal' => 'Normal', 'Priorizada' => 'Priorizada'] ,
+        'filter'=>['Normal' => 'Normal', 'Priorizada' => 'Priorizada'],
         'filterInputOptions'=>['placeholder'=>'Tipo...'],
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
+        ],
+        'editableOptions' => [
+            'header' => 'Técnico',
+            'data'=>['Normal' => 'Normal', 'Priorizada' => 'Priorizada'],
+            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
         ],
     ],
 
@@ -155,16 +160,13 @@ $gridColumns = [
         'value'=>function ($model, $key, $index, $widget) { 
             return $model->solic_usuario_suporte != NULL ? ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)) : '' ;
         },
-        // 'readonly'=>function($model, $key, $index, $widget) {
-        //     return (!$model->solic_usuario_suporte); // do not allow editing of inactive records
-        // },
         'filterType'=>GridView::FILTER_SELECT2,
         'filter'=>[219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'], 
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
             'filterInputOptions'=>['placeholder'=>'Técnico...'],
-        //CAIXA DE ALTERAÇÕES DOS TÉCNICOS
+        //CAIXA DE ALTERAÇÕES
         'editableOptions' => [
             'header' => 'Técnico',
             'data'=>[219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'],
@@ -185,7 +187,7 @@ $gridColumns = [
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
-        //CAIXA DE ALTERAÇÕES DOS TÉCNICOS
+        //CAIXA DE ALTERAÇÕES
         'editableOptions' => [
             'header' => 'Situação',
             'data'=>ArrayHelper::map(Situacao::find()->select(['id', 'sit_descricao'])->asArray()->all(), 'id', 'sit_descricao'),

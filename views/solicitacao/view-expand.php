@@ -73,6 +73,7 @@ use yii\bootstrap\Modal;
             [
                 'label' => 'Categoria',
                 'attribute' => 'categoriaSistema.sist_descricao',
+                'visible' => (!empty($model->solic_sistema_id)),
             ],
         ],
     ]) ?>
