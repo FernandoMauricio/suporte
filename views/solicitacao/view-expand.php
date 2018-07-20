@@ -7,12 +7,24 @@ use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\solicitacao\Solicitacao */
-
 ?>
+
 <div class="solicitacao-view">
     <div class="panel-body">
         <div class="row">
-            <h5><span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%"><?= $model->situacao->sit_descricao; ?></span></small></span></h5>
+            <h4><?= $model->solic_prioridade == 'Normal' ? 
+                'Suporte: '. $model->solic_id . ' <small><span class="label-solicitacao-view">'.$model->solic_prioridade.'</span><span class="label-solicitacao-view">'.$model->solic_tipo.'</span></small>'  : 
+                'Suporte: '. $model->solic_id . ' <small><span class="label label-danger">'.$model->solic_prioridade.'</span><span class="label-solicitacao-view">'.$model->solic_tipo.'</span></small>' 
+                ?>
+            </h4>
+
+            <h5>
+                <span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%;font-weight:normal"><?= $model->situacao->sit_descricao; ?></span></small></span>
+            </h5><br>
+
+            <h5>
+                <span class="pull-right"><b>Técnico Responsável: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= !empty($model->tecnico->usu_nomeusuario) ? ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)) : ''; ?></span></small></span>
+            </h5>
         </div>
     </div>
     <div class="panel panel-primary">
@@ -28,11 +40,22 @@ use yii\bootstrap\Modal;
         'model' => $model,
         'attributes' => [
             'solic_titulo',
-            'solic_patrimonio',
-            'solic_desc_equip',
+            [
+                'attribute' => 'solic_patrimonio',
+                'visible' => (!empty($model->solic_patrimonio)),
+            ],
+
+            [
+                'attribute' => 'solic_desc_equip',
+                'visible' => (!empty($model->solic_desc_equip)),
+            ],
+
             'solic_desc_serv:ntext',
 
-            'unidade.uni_nomeabreviado',
+            [
+                'label' => 'Unidade Solicitante',
+                'attribute' => 'unidade.uni_nomeabreviado',
+            ],
 
             [
                 'label' => 'Solicitante',
@@ -41,19 +64,16 @@ use yii\bootstrap\Modal;
 
             'solic_data_solicitacao',
             'solic_data_prevista',
-            'solic_data_finalizacao',
 
             [
-                'label' => 'Técnico Responsável',
-                'attribute' => 'tecnico.usu_nomeusuario',
+                'attribute' => 'solic_data_finalizacao',
+                'visible' => (!empty($model->solic_data_finalizacao)),
             ],
 
             [
                 'label' => 'Categoria',
                 'attribute' => 'categoriaSistema.sist_descricao',
-            ], 
-
-            'solic_tipo',
+            ],
         ],
     ]) ?>
 

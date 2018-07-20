@@ -27,12 +27,14 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <p>
-        <span class="pull-right"><b>Técnico Responsável: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)); ?></span></small></span>
-    </p><br><br>
+        <span class="pull-right"><b>Técnico Responsável: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= !empty($model->tecnico->usu_nomeusuario) ? ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)) : ''; ?></span></small></span>
+    </p>
+
+<br><br>
 
 <?php
     Modal::begin([
-        'options' => ['tabindex' => false ], // important for Select2 to work properly
+        'options' => ['tabindex' => false], // important for Select2 to work properly
         'clientOptions' => ['backdrop' => 'static', 'keyboard' => true],
         'header' => '<h4>Atualizar</h4>',
         'id' => 'modal',
@@ -54,11 +56,22 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'solic_titulo',
-            'solic_patrimonio',
-            'solic_desc_equip',
+            [
+                'attribute' => 'solic_patrimonio',
+                'visible' => (!empty($model->solic_patrimonio)),
+            ],
+
+            [
+                'attribute' => 'solic_desc_equip',
+                'visible' => (!empty($model->solic_desc_equip)),
+            ],
+
             'solic_desc_serv:ntext',
 
-            'unidade.uni_nomeabreviado',
+            [
+                'label' => 'Unidade Solicitante',
+                'attribute' => 'unidade.uni_nomeabreviado',
+            ],
 
             [
                 'label' => 'Solicitante',
@@ -67,7 +80,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'solic_data_solicitacao',
             'solic_data_prevista',
-            'solic_data_finalizacao',
+
+            [
+                'attribute' => 'solic_data_finalizacao',
+                'visible' => (!empty($model->solic_data_finalizacao)),
+            ],
 
             [
                 'label' => 'Categoria',
