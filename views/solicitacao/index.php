@@ -147,7 +147,7 @@ $gridColumns = [
             'pluginOptions'=>['allowClear'=>true],
         ],
         'editableOptions' => [
-            'header' => 'Técnico',
+            'header' => 'Prioridade',
             'data'=>['Normal' => 'Normal', 'Priorizada' => 'Priorizada'],
             'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
         ],
