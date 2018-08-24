@@ -11,6 +11,8 @@ use kartik\date\DatePicker;
 use app\models\solicitacao\Solicitacao;
 use app\models\base\Sistemas;
 use app\models\base\Situacao;
+use app\models\base\Unidade;
+use app\models\base\Usuario;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\solicitacao\SolicitacaoSearch */
@@ -59,7 +61,37 @@ $gridColumns = [
 
     [
         'attribute'=>'solic_id', 
-        'width'=>'5%',
+        'width'=>'3%',
+    ],
+
+    [
+        'attribute' => 'solic_unidade_solicitante',
+        'label' => 'Unidade',
+        'width' => '8%',
+        'value'=>function ($model, $key, $index, $widget) { 
+            return $model->solic_unidade_solicitante != NULL ? $model->unidade->uni_nomeabreviado : '';
+        },
+        'filterType'=>GridView::FILTER_SELECT2,
+        'filter'=>ArrayHelper::map(Unidade::find()->select(['uni_codunidade', 'uni_nomeabreviado'])->asArray()->all(), 'uni_codunidade', 'uni_nomeabreviado'),
+        'filterInputOptions'=>['placeholder'=>'Unidade...'],
+        'filterWidgetOptions'=>[
+            'pluginOptions'=>['allowClear'=>true],
+        ],
+    ],
+
+    [
+        'attribute'=>'solic_usuario_solicitante', 
+        'label' => 'Solicitante',
+        'width'=>'8%',
+        'value'=>function ($model, $key, $index, $widget) { 
+            return $model->solic_usuario_solicitante != NULL ? $model->usuario->usu_nomeusuario : '';
+        },
+        'filterType'=>GridView::FILTER_SELECT2,
+        'filter'=>ArrayHelper::map(Usuario::find()->select(['usu_codusuario', 'usu_nomeusuario'])->where(['usu_codsituacao' => 1, 'usu_codtipo' => 2])->asArray()->all(), 'usu_codusuario', 'usu_nomeusuario'),
+        'filterInputOptions'=>['placeholder'=>'Unidade...'],
+        'filterWidgetOptions'=>[
+            'pluginOptions'=>['allowClear'=>true],
+        ],
     ],
 
     [
@@ -113,8 +145,6 @@ $gridColumns = [
     // 'solic_patrimonio',
     //'solic_desc_equip',
     //'solic_desc_serv:ntext',
-    //'solic_unidade_solicitante',
-    //'solic_usuario_solicitante',
     //'solic_data_solicitacao',
     //'solic_data_finalizacao',
     [
@@ -193,7 +223,7 @@ $gridColumns = [
     [
         'class' => 'kartik\grid\EditableColumn',
         'attribute'=>'situacao_id', 
-        'width'=>'15%',
+        'width'=>'10%',
         'value'=>function ($model, $key, $index, $widget) { 
             return $model->situacao_id != NULL ? $model->situacao->sit_descricao : '' ;
         },
@@ -213,7 +243,7 @@ $gridColumns = [
 
     [
         'attribute' => 'countDias',
-        'width'=>'5%',
+        'width'=>'2%',
         'value'=>function ($model, $key, $index, $widget) { 
                 $data_inicio = new DateTime(date('Y-m-d'));
                 $data_fim = new DateTime($model->solic_data_prevista);
@@ -239,9 +269,9 @@ $gridColumns = [
         },
         //FINALIZAR SUPORTE
         'finalizar-suporte' => function ($url, $model) {
-            return Html::a('<span class="glyphicon glyphicon-ok"></span> Finalizar Suporte' , $url, [
-                        'title' => Yii::t('app', 'Finalizar suporte'),
-                        'class'=>'btn btn-default btn-xs',
+            return Html::a('<span class="glyphicon glyphicon-ok"></span> Finalizar' , $url, [
+                        'title' => Yii::t('app', 'Finalizar'),
+                        'class'=>'btn btn-success btn-xs',
                         'data' => [
                                     'confirm' => 'Você tem certeza que deseja <b>finalizar</b> esse suporte?',
                                     'method' => 'post',
@@ -281,7 +311,7 @@ $gridColumns = [
     'beforeHeader'=>[
         [
             'columns'=>[
-                ['content'=>'Detalhes da Listagem dos Suportes', 'options'=>['colspan'=>10, 'class'=>'text-center warning']], 
+                ['content'=>'Detalhes da Listagem dos Suportes', 'options'=>['colspan'=>12, 'class'=>'text-center warning']], 
                 ['content'=>'Área de Ações', 'options'=>['colspan'=>1, 'class'=>'text-center warning']], 
             ],
         ]
