@@ -81,6 +81,7 @@ use kartik\file\FileInput;
                         'language' => 'pt-BR',
                         'showRemove'=> false,
                         'showUpload'=> false,
+                        'dropZoneEnabled' => false,
                     ],
                 ]);
             ?>
