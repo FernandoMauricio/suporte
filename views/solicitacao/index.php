@@ -203,7 +203,7 @@ $gridColumns = [
                 $data_fim = new DateTime($model->solic_data_prevista);
                 $dateInterval = $data_inicio->diff($data_fim);
             if($model->situacao_id != 6 && $model->situacao_id != 7) { // QUANDO FOR DIFERENTE DA SOLICIAÇÃO ATENDIDA
-                return $dateInterval->format("%r%a") < '-0' ? 'Atrasado' : $dateInterval->format("%r%a");
+                return $dateInterval->format("%r%a");
             }else{
                 return '-';
             }
@@ -211,17 +211,27 @@ $gridColumns = [
     ],
 
     ['class' => 'yii\grid\ActionColumn',
-        'template' => '{view}',
+        'template' => '{view} {finalizar-suporte}',
         'contentOptions' => ['style' => 'width: 10%'],
         'buttons' => [
         //VISUALIZAR
         'view' => function ($url, $model) {
             return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, [
-                        'class'=>'btn btn-default btn-xs',
-        
+                'title' => Yii::t('app', 'Detalhes do suporte'),
+                'class'=>'btn btn-primary btn-xs',
             ]);
         },
-
+        //FINALIZAR SUPORTE
+        'finalizar-suporte' => function ($url, $model) {
+            return Html::a('<span class="glyphicon glyphicon-ok"></span> Finalizar Suporte' , $url, [
+                        'title' => Yii::t('app', 'Finalizar suporte'),
+                        'class'=>'btn btn-default btn-xs',
+                        'data' => [
+                                    'confirm' => 'Você tem certeza que deseja <b>finalizar</b> esse suporte?',
+                                    'method' => 'post',
+                                ],
+            ]);
+        },
         ],
     ],
 

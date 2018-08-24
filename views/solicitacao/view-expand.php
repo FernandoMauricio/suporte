@@ -27,6 +27,14 @@ use yii\bootstrap\Modal;
             </h5>
         </div>
     </div>
+
+<!-- Mensagem informando a finalizacão  -->
+<?php if($model->solic_usuario_finalizacao != NULL || $model->solic_data_finalizacao != NULL): ?> 
+    <div class='alert alert-success' align='center' role='alert'>
+        <span class='glyphicon glyphicon-alert' aria-hidden='true'></span> Suporte <b>encerrado</b> por: <b><?= ucwords(mb_strtolower($model->solic_usuario_finalizacao)) ?></b> em <?= date('d/m/Y à\s H:i', strtotime($model->solic_data_finalizacao)) ?>
+        </div>
+<?php endif; ?>
+
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Detalhes do Suporte</h3>

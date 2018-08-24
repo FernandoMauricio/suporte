@@ -21,6 +21,7 @@ use app\models\base\Unidade;
  * @property string $solic_data_solicitacao
  * @property string $solic_data_prevista
  * @property string $solic_data_finalizacao
+ * @property string $solic_usuario_finalizacao
  * @property string $solic_prioridade
  * @property int $solic_usuario_suporte
  * @property int $solic_sistema_id
@@ -55,7 +56,7 @@ class Solicitacao extends \yii\db\ActiveRecord
             [['solic_titulo', 'solic_desc_serv', 'solic_unidade_solicitante', 'solic_usuario_solicitante', 'solic_data_solicitacao', 'solic_tipo', 'situacao_id'], 'required'],
             [['solic_data_solicitacao', 'solic_data_prevista', 'solic_data_finalizacao', 'countDias'], 'safe'],
             [['solic_titulo'], 'string', 'max' => 100],
-            [['solic_desc_equip'], 'string', 'max' => 255],
+            [['solic_desc_equip', 'solic_usuario_finalizacao'], 'string', 'max' => 255],
             [['solic_prioridade'], 'string', 'max' => 20],
             [['solic_tipo'], 'string', 'max' => 50],
             [['solic_sistema_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sistemas::className(), 'targetAttribute' => ['solic_sistema_id' => 'id']],
@@ -92,6 +93,7 @@ class Solicitacao extends \yii\db\ActiveRecord
             'solic_data_solicitacao' => 'Data da Solicitação',
             'solic_data_prevista' => 'Data Prevista',
             'solic_data_finalizacao' => 'Data da Finalização',
+            'solic_usuario_finalizacao' => 'Finalizado Por',
             'solic_prioridade' => 'Prioridade',
             'solic_usuario_suporte' => 'Técnico',
             'solic_sistema_id' => 'Categoria',

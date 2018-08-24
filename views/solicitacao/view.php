@@ -32,6 +32,13 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <br><br>
 
+<!-- Mensagem informando a finalizacão  -->
+<?php if($model->solic_usuario_finalizacao != NULL || $model->solic_data_finalizacao != NULL): ?> 
+    <div class='alert alert-success' align='center' role='alert'>
+        <span class='glyphicon glyphicon-alert' aria-hidden='true'></span> Suporte <b>encerrado</b> por: <b><?= ucwords(mb_strtolower($model->solic_usuario_finalizacao)) ?></b> em <?= date('d/m/Y à\s H:i', strtotime($model->solic_data_finalizacao)) ?>
+        </div>
+<?php endif; ?>
+
 <?php
     Modal::begin([
         'options' => ['tabindex' => false], // important for Select2 to work properly
@@ -78,8 +85,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'usuario.usu_nomeusuario',
             ],
 
-            'solic_data_solicitacao',
-            'solic_data_prevista',
+            [
+                'attribute' => 'solic_data_solicitacao',
+                'visible' => (!empty($model->solic_data_solicitacao)),
+                'format'    => ['date', 'php:d/m/Y'],
+            ],
+            
+            [
+                'attribute' => 'solic_data_prevista',
+                'visible' => (!empty($model->solic_data_prevista)),
+                'format'    => ['date', 'php:d/m/Y'],
+            ],
 
             [
                 'attribute' => 'solic_data_finalizacao',
