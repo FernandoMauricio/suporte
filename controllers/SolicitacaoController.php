@@ -6,6 +6,7 @@ use Yii;
 use app\models\base\Sistemas;
 use app\models\base\Situacao;
 use app\models\base\Usuario;
+use app\models\base\Unidade;
 use app\models\base\Email;
 use app\models\base\Colaborador;
 use app\models\solicitacao\Forum;
@@ -216,6 +217,8 @@ class SolicitacaoController extends Controller
         $model->situacao_id = 1;
         
         $sistemas = Sistemas::find()->orderBy('sist_descricao')->all();
+        $unidades = Unidade::find()->orderBy('uni_nomeabreviado')->all();
+        $usuarios = Usuario::find()->where(['usu_codsituacao' => 1, 'usu_codtipo' => 2])->orderBy('usu_nomeusuario')->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             ///--------salva os anexos
@@ -240,6 +243,8 @@ class SolicitacaoController extends Controller
         return $this->render('create', [
             'model' => $model,
             'sistemas' => $sistemas,
+            'unidades' => $unidades,
+            'usuarios' => $usuarios,
         ]);
     }
 

@@ -9,6 +9,7 @@ use kartik\file\FileInput;
 /* @var $this yii\web\View */
 /* @var $model app\models\solicitacao\Solicitacao */
 /* @var $form yii\widgets\ActiveForm */
+$session = Yii::$app->session;
 ?>
 
 <div class="solicitacao-form">
@@ -22,6 +23,31 @@ use kartik\file\FileInput;
 
     <div class="panel-body">
         <div class="row">
+            <!-- Técnicos da GTI poderão abrir chamados para outros usuários-->
+            <?php $data_unidades = ArrayHelper::map($unidades, 'uni_codunidade', 'uni_nomeabreviado'); ?>
+            <?= $session['sess_codunidade'] == 1 ? 
+                '<div class="col-md-6">'
+                    .$form->field($model, 'solic_unidade_solicitante')->widget(Select2::classname(), [
+                        'data' =>  $data_unidades,
+                        'options' => ['placeholder' => 'Selecione a Unidade...'],
+                        'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                        ]). '</div>' 
+                : '' ?>
+            <!-- Técnicos da GTI poderão abrir chamados para outros usuários-->
+            <?php $data_usuarios = ArrayHelper::map($usuarios, 'usu_codusuario', 'usu_nomeusuario'); ?>
+            <?= $session['sess_codunidade'] == 1 ? 
+                '<div class="col-md-6">'
+                    .$form->field($model, 'solic_usuario_solicitante')->widget(Select2::classname(), [
+                        'data' =>  $data_usuarios,
+                        'options' => ['placeholder' => 'Selecione o Usuário...'],
+                        'pluginOptions' => [
+                                'allowClear' => true
+                            ],
+                        ]). '</div>' 
+                : '' ?>
+
             <div class="col-md-6"><?= $form->field($model, 'solic_titulo')->textInput(['maxlength' => true]) ?></div>
 
             <?= $model->solic_tipo == 'Equipamentos' ? '<div class="col-md-2">' .$form->field($model, 'solic_patrimonio')->textInput(['maxlength' => true]). '</div>' : '' ?>
