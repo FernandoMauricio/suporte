@@ -63,30 +63,46 @@ $gridColumns = [
     ],
 
     [
+        'class' => 'kartik\grid\EditableColumn',
         'attribute'=>'solic_tipo', 
         'width'=>'5%',
-        'value'=>function ($model, $key, $index, $widget) { 
-            return $model->solic_tipo != NULL ? $model->solic_tipo : '' ;
+        'format' => 'raw',
+        'value' => function ($model, $key, $index, $widget) { 
+            return $model->solic_tipo != NULL ? $model->solic_tipo : '';
         },
         'filterType'=>GridView::FILTER_SELECT2,
-        'filter'=>['Sistemas' => 'Sistemas', 'Equipamentos' => 'Equipamentos'] ,
+        'filter'=>['Sistemas' => 'Sistemas', 'Equipamentos' => 'Equipamentos'],
         'filterInputOptions'=>['placeholder'=>'Tipo...'],
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
+        'editableOptions' => [
+            'header' => 'Tipo',
+            'data'=>['Sistemas' => 'Sistemas', 'Equipamentos' => 'Equipamentos'],
+            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
+        ],
     ],
 
     [
+        'class' => 'kartik\grid\EditableColumn',
         'attribute'=>'solic_sistema_id', 
         'width'=>'5%',
         'value'=>function ($model, $key, $index, $widget) { 
-            return $model->solic_sistema_id != NULL ? $model->categoriaSistema->sist_descricao : '' ;
+            return $model->solic_sistema_id != NULL ? $model->categoriaSistema->sist_descricao : NULL;
+        },
+        'readonly' => function($model, $key, $index, $widget) {
+            return ($model->solic_tipo == 'Equipamentos'); // do not allow editing of inactive records
         },
         'filterType'=>GridView::FILTER_SELECT2,
         'filter'=>ArrayHelper::map(Sistemas::find()->select(['id', 'sist_descricao'])->asArray()->all(), 'id', 'sist_descricao'),
         'filterInputOptions'=>['placeholder'=>'Categoria...'],
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
+        ],
+        'editableOptions' => [
+            'header' => 'Categoria',
+            'data'=>ArrayHelper::map(Sistemas::find()->select(['id', 'sist_descricao'])->asArray()->all(), 'id', 'sist_descricao'),
+            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
         ],
     ],
 
@@ -95,8 +111,8 @@ $gridColumns = [
         'width'=>'20%',
     ],
     // 'solic_patrimonio',
-    // 'solic_desc_equip',
-    // 'solic_desc_serv:ntext',
+    //'solic_desc_equip',
+    //'solic_desc_serv:ntext',
     //'solic_unidade_solicitante',
     //'solic_usuario_solicitante',
     //'solic_data_solicitacao',

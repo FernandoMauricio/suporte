@@ -92,7 +92,10 @@ class SolicitacaoController extends Controller
 
             // load model like any single model validation
             if ($model->load($post)) {
-                // can save model or do something before saving model
+                //Caso o tipo for alterado para Equipamentos, a coluna Sistema ficará nulo
+                if(!empty($posted['solic_tipo']) && $model->solic_tipo == 'Equipamentos') { 
+                    $model->solic_sistema_id = NULL;
+                }
                 $model->save(false);
                 $output = '';
                 $out = Json::encode(['output'=>$output, 'message'=>'']);
@@ -106,6 +109,7 @@ class SolicitacaoController extends Controller
                 if(!empty($posted['solic_usuario_suporte'])) { $forum->for_usuario_suporte = $model->solic_usuario_suporte; }
                 if(!empty($posted['solic_data_prevista'])) { $forum->for_data_prevista = $model->solic_data_prevista; }
                 if(!empty($posted['solic_prioridade'])) { $forum->for_prioridade = $model->solic_prioridade; }
+                if(!empty($posted['solic_tipo'])) { $forum->for_tipo = $model->solic_tipo; }
                 $forum->save(false);
             }
             // return ajax json encoded response and exit

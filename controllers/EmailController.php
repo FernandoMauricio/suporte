@@ -62,6 +62,13 @@ class EmailController extends Controller
             </ul>
             ';
         }
+        if (!empty($posted['solic_tipo'])) {
+            $alteracoes .= '
+            <ul style="line-height:1.4em">
+                <li><b>Tipo <span style="color: #d35400">Alterado para: </b></span> '.$model->solic_tipo.'</li>
+            </ul>
+            ';
+        }
         if (!empty($posted['solic_prioridade'])) {
             $alteracoes .= '
             <ul style="line-height:1.4em">

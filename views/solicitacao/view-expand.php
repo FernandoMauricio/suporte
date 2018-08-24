@@ -102,6 +102,7 @@ use yii\bootstrap\Modal;
                         <?= !empty($forum->for_data_prevista) ? '<li><b> Data Prevista <span style="color: #d35400">Alterada para: </b></span>' .date('d/m/Y', strtotime($forum->for_data_prevista)) : ''; ?></li>
                         <?= !empty($forum->situacao->sit_descricao) ? '<li><b>Situação <span style="color: #d35400">Alterado para: </b></span>' .$forum->situacao->sit_descricao : ''; ?></li>
                         <?= !empty($forum->for_prioridade) ? '<li><b>Prioridade <span style="color: #d35400">Alterado para: </b></span>' .$forum->for_prioridade : ''; ?></li>
+                        <?= !empty($forum->for_tipo) ? '<li><b>Tipo <span style="color: #d35400">Alterado para: </b></span>' .$forum->for_tipo : ''; ?></li>
                     </ul><br />
 
                     <h5><?= $forum->for_mensagem ?></h5>
