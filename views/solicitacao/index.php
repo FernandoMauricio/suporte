@@ -236,7 +236,7 @@ $gridColumns = [
         //CAIXA DE ALTERAÇÕES
         'editableOptions' => [
             'header' => 'Situação',
-            'data'=>ArrayHelper::map(Situacao::find()->select(['id', 'sit_descricao'])->asArray()->all(), 'id', 'sit_descricao'),
+            'data'=>ArrayHelper::map(Situacao::find()->select(['id', 'sit_descricao'])->where(['not in', 'id', [6,7]])->asArray()->all(), 'id', 'sit_descricao'),
             'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
         ], 
     ],
@@ -257,7 +257,7 @@ $gridColumns = [
     ],
 
     ['class' => 'yii\grid\ActionColumn',
-        'template' => '{view} {finalizar-suporte}',
+        'template' => '{view} {finalizar-suporte-pelo-tecnico}',
         'contentOptions' => ['style' => 'width: 10%'],
         'buttons' => [
         //VISUALIZAR
@@ -268,15 +268,18 @@ $gridColumns = [
             ]);
         },
         //FINALIZAR SUPORTE
-        'finalizar-suporte' => function ($url, $model) {
+        'finalizar-suporte-pelo-tecnico' => function ($url, $model) {
+            if($model->situacao_id != 6 && $model->situacao_id != 7) {
             return Html::a('<span class="glyphicon glyphicon-ok"></span> Finalizar' , $url, [
-                        'title' => Yii::t('app', 'Finalizar'),
-                        'class'=>'btn btn-success btn-xs',
-                        'data' => [
-                                    'confirm' => 'Você tem certeza que deseja <b>finalizar</b> esse suporte?',
-                                    'method' => 'post',
-                                ],
-            ]);
+                    'title' => Yii::t('app', 'Finalizar'),
+                    'class'=>'btn btn-success btn-xs',
+                    'data' => [
+                                'confirm' => 'Você tem certeza que deseja <b>finalizar</b> esse suporte?',
+                                'method' => 'post',
+                            ],
+            ]); }else{
+                '';
+            } 
         },
         ],
     ],
@@ -322,7 +325,7 @@ $gridColumns = [
         'heading'=> '<h3 class="panel-title"><i class="glyphicon glyphicon-book"></i> Listagem - Suportes</h3>',
     ],
 ]);
-    ?>
+?>
 <?php Pjax::end(); ?>
 
 </div>
