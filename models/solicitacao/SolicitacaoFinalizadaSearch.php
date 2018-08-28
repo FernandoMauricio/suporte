@@ -8,9 +8,9 @@ use yii\data\ActiveDataProvider;
 use app\models\solicitacao\Solicitacao;
 
 /**
- * SolicitacaoAdmSearch represents the model behind the search form of `app\models\solicitacao\Solicitacao`.
+ * SolicitacaoFinalizadaSearch represents the model behind the search form of `app\models\solicitacao\Solicitacao`.
  */
-class SolicitacaoAdmSearch extends Solicitacao
+class SolicitacaoFinalizadaSearch extends Solicitacao
 {
     /**
      * {@inheritdoc}
@@ -18,8 +18,8 @@ class SolicitacaoAdmSearch extends Solicitacao
     public function rules()
     {
         return [
-            [['solic_id', 'solic_patrimonio', 'solic_unidade_solicitante', 'solic_usuario_solicitante', 'solic_usuario_suporte', 'solic_sistema_id', 'situacao_id'], 'integer'],
-            [['solic_titulo', 'solic_desc_equip', 'solic_desc_serv', 'solic_data_solicitacao', 'solic_data_prevista', 'solic_data_finalizacao', 'solic_usuario_finalizacao', 'solic_prioridade', 'solic_tipo'], 'safe'],
+            [['solic_id', 'solic_patrimonio', 'solic_unidade_solicitante', 'solic_usuario_solicitante', 'solic_sistema_id', 'situacao_id'], 'integer'],
+            [['solic_titulo', 'solic_desc_equip', 'solic_desc_serv', 'solic_data_solicitacao', 'solic_data_prevista', 'solic_data_finalizacao', 'solic_prioridade', 'solic_tipo', 'solic_usuario_suporte'], 'safe'],
         ];
     }
 
@@ -56,6 +56,9 @@ class SolicitacaoAdmSearch extends Solicitacao
             // $query->where('0=1');
             return $dataProvider;
         }
+        
+        $connect = \Yii::$app->db_base;
+        //$query->joinWith('tecnico');
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -68,16 +71,16 @@ class SolicitacaoAdmSearch extends Solicitacao
             'solic_data_finalizacao' => $this->solic_data_finalizacao,
             'solic_usuario_suporte' => $this->solic_usuario_suporte,
             'solic_sistema_id' => $this->solic_sistema_id,
+            'situacao_id' => 6, //Solicitações Finalizadas
         ]);
 
-        $query->andFilterWhere(['NOT IN', 'situacao_id', 6]); //Suportes Finalizados pelo solicitante não aparecerão
 
         $query->andFilterWhere(['like', 'solic_titulo', $this->solic_titulo])
             ->andFilterWhere(['like', 'solic_desc_equip', $this->solic_desc_equip])
             ->andFilterWhere(['like', 'solic_desc_serv', $this->solic_desc_serv])
-            ->andFilterWhere(['like', 'solic_usuario_finalizacao', $this->solic_usuario_finalizacao])
             ->andFilterWhere(['like', 'solic_prioridade', $this->solic_prioridade])
-            ->andFilterWhere(['like', 'solic_tipo', $this->solic_tipo]);
+            ->andFilterWhere(['like', 'solic_tipo', $this->solic_tipo])
+            ->andFilterWhere(['like', 'solic_usuario_suporte', $this->solic_usuario_suporte]);
 
         return $dataProvider;
     }

@@ -22,6 +22,7 @@ echo Navx::widget([
         ['label' => 'Administração', 'items' => [
             '<li class="dropdown-header">Administração dos Suportes</li>',
                 ['label' => '<span class="glyphicon glyphicon-list-alt"></span> Listagem de Suportes', 'url' => ['/solicitacao/index-adm']],
+                ['label' => '<span class="glyphicon glyphicon-floppy-save"></span> Suportes Finalizados', 'url' => ['/solicitacao/index-finalizados']],
             ]
         ],
 

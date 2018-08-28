@@ -13,6 +13,7 @@ use app\models\solicitacao\Forum;
 use app\models\solicitacao\Solicitacao;
 use app\models\solicitacao\SolicitacaoSearch;
 use app\models\solicitacao\SolicitacaoAdmSearch;
+use app\models\solicitacao\SolicitacaoFinalizadaSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -109,6 +110,23 @@ class SolicitacaoController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index-adm', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists all Solicitacao models.
+     * @return mixed
+     */
+    public function actionIndexFinalizados()
+    {
+        $this->layout = 'main-full';
+
+        $searchModel = new SolicitacaoFinalizadaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index-finalizados', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);

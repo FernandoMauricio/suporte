@@ -14,7 +14,7 @@ $session = Yii::$app->session;
 
 <div class="solicitacao-form">
 
-    <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
+<?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
 
 <div class="panel panel-primary">
     <div class="panel-heading">
