@@ -6,8 +6,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\models\solicitacao\Solicitacao */
 
-$this->title = 'Create Solicitacao';
-$this->params['breadcrumbs'][] = ['label' => 'Solicitacaos', 'url' => ['index']];
+$this->title = 'Nova Solicitação';
+$this->params['breadcrumbs'][] = ['label' => 'Listagem de Suportes', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="solicitacao-create">
@@ -16,6 +16,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'sistemas' => $sistemas,
+        'unidades' => $unidades,
+        'usuarios' => $usuarios,
     ]) ?>
 
 </div>

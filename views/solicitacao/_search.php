@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\solicitacao\SolicitacaoAdmSearch */
+/* @var $model app\models\solicitacao\SolicitacaoSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -34,8 +34,6 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'solic_data_prevista') ?>
 
     <?php // echo $form->field($model, 'solic_data_finalizacao') ?>
-
-    <?php // echo $form->field($model, 'solic_usuario_finalizacao') ?>
 
     <?php // echo $form->field($model, 'solic_prioridade') ?>
 
