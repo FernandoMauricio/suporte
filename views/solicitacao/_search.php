@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use kartik\daterange\DateRangePicker;
+
 
 /* @var $this yii\web\View */
 /* @var $model app\models\solicitacao\SolicitacaoSearch */
@@ -11,13 +13,31 @@ use yii\widgets\ActiveForm;
 <div class="solicitacao-search">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        'action' => ['index-adm'],
         'method' => 'get',
     ]); ?>
 
 <div class="panel-body">
     <div class="row">
         <div class="col-md-2"><?= $form->field($model, 'solic_patrimonio') ?></div>
+
+        <div class="col-md-2">
+            <?php
+                echo '<label class="control-label">Período da Solicitação</label>';
+                echo DateRangePicker::widget([
+                'model'=>$model,
+                'attribute'=>'solic_data_solicitacao',
+                'convertFormat'=>true,
+                'startAttribute'=>'date_min',
+                'endAttribute'=>'date_max',
+                'pluginOptions'=>[
+                    'locale'=>[
+                        'format'=>'Y-m-d'
+                    ]
+                ]
+                ]);
+            ?>
+        </div>
     </div>
 </div>
 

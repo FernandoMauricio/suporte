@@ -12,6 +12,9 @@ use app\models\solicitacao\Solicitacao;
  */
 class SolicitacaoAdmSearch extends Solicitacao
 {
+    public $date_min;
+    public $date_max;
+
     /**
      * {@inheritdoc}
      */
@@ -19,7 +22,7 @@ class SolicitacaoAdmSearch extends Solicitacao
     {
         return [
             [['solic_id', 'solic_patrimonio', 'solic_unidade_solicitante', 'solic_usuario_solicitante', 'solic_usuario_suporte', 'solic_sistema_id', 'situacao_id'], 'integer'],
-            [['solic_titulo', 'solic_desc_equip', 'solic_desc_serv', 'solic_data_solicitacao', 'solic_data_prevista', 'solic_data_finalizacao', 'solic_usuario_finalizacao', 'solic_prioridade', 'solic_tipo'], 'safe'],
+            [['solic_titulo', 'solic_desc_equip', 'solic_desc_serv', 'solic_data_solicitacao', 'solic_data_prevista', 'solic_data_finalizacao', 'solic_usuario_finalizacao', 'solic_prioridade', 'solic_tipo', 'date_min', 'date_max'], 'safe'],
         ];
     }
 
@@ -63,7 +66,6 @@ class SolicitacaoAdmSearch extends Solicitacao
             'solic_patrimonio' => $this->solic_patrimonio,
             'solic_unidade_solicitante' => $this->solic_unidade_solicitante,
             'solic_usuario_solicitante' => $this->solic_usuario_solicitante,
-            'solic_data_solicitacao' => $this->solic_data_solicitacao,
             'solic_data_prevista' => $this->solic_data_prevista,
             'solic_data_finalizacao' => $this->solic_data_finalizacao,
             'solic_usuario_suporte' => $this->solic_usuario_suporte,
@@ -77,7 +79,8 @@ class SolicitacaoAdmSearch extends Solicitacao
             ->andFilterWhere(['like', 'solic_desc_serv', $this->solic_desc_serv])
             ->andFilterWhere(['like', 'solic_usuario_finalizacao', $this->solic_usuario_finalizacao])
             ->andFilterWhere(['like', 'solic_prioridade', $this->solic_prioridade])
-            ->andFilterWhere(['like', 'solic_tipo', $this->solic_tipo]);
+            ->andFilterWhere(['like', 'solic_tipo', $this->solic_tipo])
+            ->andFilterWhere(['between', 'solic_data_solicitacao', $this->date_min, $this->date_max]);
 
         return $dataProvider;
     }
