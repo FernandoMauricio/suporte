@@ -65,21 +65,6 @@ $gridColumns = [
     ],
 
     [
-        'attribute' => 'solic_unidade_solicitante',
-        'label' => 'Unidade',
-        'width' => '8%',
-        'value'=>function ($model, $key, $index, $widget) { 
-            return $model->solic_unidade_solicitante != NULL ? $model->unidade->uni_nomeabreviado : '';
-        },
-        'filterType'=>GridView::FILTER_SELECT2,
-        'filter'=>ArrayHelper::map(Unidade::find()->select(['uni_codunidade', 'uni_nomeabreviado'])->asArray()->all(), 'uni_codunidade', 'uni_nomeabreviado'),
-        'filterInputOptions'=>['placeholder'=>'Unidade...'],
-        'filterWidgetOptions'=>[
-            'pluginOptions'=>['allowClear'=>true],
-        ],
-    ],
-
-    [
         'attribute'=>'solic_usuario_solicitante', 
         'label' => 'Solicitante',
         'width'=>'8%',
@@ -95,7 +80,6 @@ $gridColumns = [
     ],
 
     [
-        'class' => 'kartik\grid\EditableColumn',
         'attribute'=>'solic_tipo', 
         'width'=>'5%',
         'format' => 'raw',
@@ -108,22 +92,13 @@ $gridColumns = [
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
-        'editableOptions' => [
-            'header' => 'Tipo',
-            'data'=>['Sistemas' => 'Sistemas', 'Equipamentos' => 'Equipamentos'],
-            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
-        ],
     ],
 
     [
-        'class' => 'kartik\grid\EditableColumn',
         'attribute'=>'solic_sistema_id', 
         'width'=>'5%',
         'value'=>function ($model, $key, $index, $widget) { 
             return $model->solic_sistema_id != NULL ? $model->categoriaSistema->sist_descricao : NULL;
-        },
-        'readonly' => function($model, $key, $index, $widget) {
-            return ($model->solic_tipo == 'Equipamentos'); // do not allow editing of inactive records
         },
         'filterType'=>GridView::FILTER_SELECT2,
         'filter'=>ArrayHelper::map(Sistemas::find()->select(['id', 'sist_descricao'])->asArray()->all(), 'id', 'sist_descricao'),
@@ -131,24 +106,14 @@ $gridColumns = [
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
-        'editableOptions' => [
-            'header' => 'Categoria',
-            'data'=>ArrayHelper::map(Sistemas::find()->select(['id', 'sist_descricao'])->asArray()->all(), 'id', 'sist_descricao'),
-            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
-        ],
     ],
 
     [
         'attribute'=>'solic_titulo', 
         'width'=>'20%',
     ],
-    // 'solic_patrimonio',
-    //'solic_desc_equip',
-    //'solic_desc_serv:ntext',
-    //'solic_data_solicitacao',
-    //'solic_data_finalizacao',
+
     [
-        'class'=>'kartik\grid\EditableColumn',
         'attribute'=>'solic_data_prevista',
         'width' => '8%', 
         'hAlign'=>'center',
@@ -162,24 +127,9 @@ $gridColumns = [
             'format' => 'yyyy-mm-dd',
             ]
         ]),
-        'editableOptions'=>[
-            'inputType'=>\kartik\editable\Editable::INPUT_WIDGET,
-            'widgetClass'=> 'kartik\datecontrol\DateControl',
-            'options'=>[
-                'type'=>\kartik\datecontrol\DateControl::FORMAT_DATE,
-                'displayFormat'=>'dd/MM/yyyy',
-                'saveFormat'=>'php:Y-m-d',
-                'options'=>[
-                    'pluginOptions'=>[
-                        'autoclose'=>true
-                    ]
-                ]
-            ]
-        ],
     ],
 
     [
-        'class' => 'kartik\grid\EditableColumn',
         'attribute'=>'solic_prioridade', 
         'width'=>'5%',
         'format' => 'raw',
@@ -192,36 +142,23 @@ $gridColumns = [
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
-        'editableOptions' => [
-            'header' => 'Prioridade',
-            'data'=>['Normal' => 'Normal', 'Priorizada' => 'Priorizada'],
-            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
-        ],
     ],
 
     [
-        'class' => 'kartik\grid\EditableColumn',
         'attribute' => 'solic_usuario_suporte',
         'width'=>'10%',
         'value'=>function ($model, $key, $index, $widget) { 
             return $model->solic_usuario_suporte != NULL ? ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)) : '' ;
         },
         'filterType'=>GridView::FILTER_SELECT2,
-        'filter'=>[219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'], 
+        'filter'=>[219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'],
+        'filterInputOptions'=>['placeholder'=>'Técnico...'],
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
-            'filterInputOptions'=>['placeholder'=>'Técnico...'],
-        //CAIXA DE ALTERAÇÕES
-        'editableOptions' => [
-            'header' => 'Técnico',
-            'data'=>[219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'],
-            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
-        ],          
     ],
 
     [
-        'class' => 'kartik\grid\EditableColumn',
         'attribute'=>'situacao_id', 
         'width'=>'10%',
         'value'=>function ($model, $key, $index, $widget) { 
@@ -233,12 +170,6 @@ $gridColumns = [
         'filterWidgetOptions'=>[
             'pluginOptions'=>['allowClear'=>true],
         ],
-        //CAIXA DE ALTERAÇÕES
-        'editableOptions' => [
-            'header' => 'Situação',
-            'data'=>ArrayHelper::map(Situacao::find()->select(['id', 'sit_descricao'])->where(['not in', 'id', [6,7]])->asArray()->all(), 'id', 'sit_descricao'),
-            'inputType' => \kartik\editable\Editable::INPUT_DROPDOWN_LIST,
-        ], 
     ],
 
     [
@@ -314,7 +245,7 @@ $gridColumns = [
     'beforeHeader'=>[
         [
             'columns'=>[
-                ['content'=>'Detalhes da Listagem dos Suportes', 'options'=>['colspan'=>12, 'class'=>'text-center warning']], 
+                ['content'=>'Detalhes da Listagem dos Suportes', 'options'=>['colspan'=>11, 'class'=>'text-center warning']], 
                 ['content'=>'Área de Ações', 'options'=>['colspan'=>1, 'class'=>'text-center warning']], 
             ],
         ]

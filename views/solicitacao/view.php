@@ -23,10 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::button('Atualizar', ['value'=> Url::to(['inserir-mensagem', 'id' => $model->solic_id]), 'class' => 'btn btn-primary', 'id'=>'modalButton']) ?>
-        <span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%;font-weight:normal"><?= $model->situacao->sit_descricao; ?></span></small></span>
+        
     </p>
+    <p>
+        <span class="pull-left"><b>Data da solicitação: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= date('d/m/Y', strtotime($model->solic_data_solicitacao)); ?></span></small></span>
+        <span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%;font-weight:normal"><?= $model->situacao->sit_descricao; ?></span></small></span>
+    </p><br /><br />
 
     <p>
+        <span class="pull-left"><b>Data Prevista: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= !empty($model->solic_data_prevista) ?  date('d/m/Y', strtotime($model->solic_data_prevista)) : ''; ?></span></small></span>
         <span class="pull-right"><b>Técnico Responsável: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= !empty($model->tecnico->usu_nomeusuario) ? ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)) : ''; ?></span></small></span>
     </p>
 

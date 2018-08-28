@@ -9,20 +9,22 @@ use yii\bootstrap\Modal;
 /* @var $model app\models\solicitacao\Solicitacao */
 ?>
 
-<div class="solicitacao-view">
+<div class="solicitacao-view-expand">
     <div class="panel-body">
         <div class="row">
             <h4><?= $model->solic_prioridade == 'Normal' ? 
                 'Suporte: '. $model->solic_id . ' <small><span class="label-solicitacao-view">'.$model->solic_prioridade.'</span><span class="label-solicitacao-view">'.$model->solic_tipo.'</span></small>'  : 
                 'Suporte: '. $model->solic_id . ' <small><span class="label label-danger">'.$model->solic_prioridade.'</span><span class="label-solicitacao-view">'.$model->solic_tipo.'</span></small>' 
                 ?>
-            </h4>
+            </h4><br />
 
             <h5>
+                <span class="pull-left"><b>Data da solicitação: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= date('d/m/Y', strtotime($model->solic_data_solicitacao)); ?></span></small></span>
                 <span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%;font-weight:normal"><?= $model->situacao->sit_descricao; ?></span></small></span>
-            </h5><br>
+            </h5><br />
 
             <h5>
+                <span class="pull-left"><b>Data Prevista: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= !empty($model->solic_data_prevista) ?  date('d/m/Y', strtotime($model->solic_data_prevista)) : ''; ?></span></small></span>
                 <span class="pull-right"><b>Técnico Responsável: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= !empty($model->tecnico->usu_nomeusuario) ? ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)) : ''; ?></span></small></span>
             </h5>
         </div>
@@ -47,6 +49,17 @@ use yii\bootstrap\Modal;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+
+            [
+                'label' => 'Unidade Solicitante',
+                'attribute' => 'unidade.uni_nomeabreviado',
+            ],
+
+            [
+                'label' => 'Solicitante',
+                'attribute' => 'usuario.usu_nomeusuario',
+            ],
+
             'solic_titulo',
             [
                 'attribute' => 'solic_patrimonio',
@@ -61,27 +74,26 @@ use yii\bootstrap\Modal;
             'solic_desc_serv:ntext',
 
             [
-                'label' => 'Unidade Solicitante',
-                'attribute' => 'unidade.uni_nomeabreviado',
-            ],
-
-            [
-                'label' => 'Solicitante',
-                'attribute' => 'usuario.usu_nomeusuario',
-            ],
-
-            'solic_data_solicitacao',
-            'solic_data_prevista',
-
-            [
-                'attribute' => 'solic_data_finalizacao',
-                'visible' => (!empty($model->solic_data_finalizacao)),
-            ],
-
-            [
                 'label' => 'Categoria',
                 'attribute' => 'categoriaSistema.sist_descricao',
                 'visible' => (!empty($model->solic_sistema_id)),
+            ],
+            
+            [
+                'attribute' => 'file',
+                'format' => 'raw',
+                'value' => function($model) { 
+                       if($files=\yii\helpers\FileHelper::findFiles('uploads/solicitacoes/' . $model->solic_id,['recursive'=>FALSE])) {
+                            if (isset($files[0])) {
+                                $result = "";
+                                foreach ($files as $index => $file) {
+                                $nameFicheiro = substr($file, strrpos($file, '/') + 1); 
+                                    $result .= Html::a($nameFicheiro, Url::base().'/uploads/solicitacoes/'. $model->solic_id. '/' . $nameFicheiro, ['target'=>'_blank', 'data-pjax'=>"0"]) . "<br />"; 
+                                }
+                                return $result;
+                            }
+                    }
+                },
             ],
         ],
     ]) ?>

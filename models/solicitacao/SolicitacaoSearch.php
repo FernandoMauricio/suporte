@@ -60,17 +60,19 @@ class SolicitacaoSearch extends Solicitacao
         $connect = \Yii::$app->db_base;
         //$query->joinWith('tecnico');
 
+        $session = Yii::$app->session;
+
         // grid filtering conditions
         $query->andFilterWhere([
             'solic_id' => $this->solic_id,
             'solic_patrimonio' => $this->solic_patrimonio,
-            'solic_unidade_solicitante' => $this->solic_unidade_solicitante,
             'solic_usuario_solicitante' => $this->solic_usuario_solicitante,
             'solic_data_solicitacao' => $this->solic_data_solicitacao,
             'solic_data_prevista' => $this->solic_data_prevista,
             'solic_data_finalizacao' => $this->solic_data_finalizacao,
             'solic_sistema_id' => $this->solic_sistema_id,
             'situacao_id' => $this->situacao_id,
+            'solic_unidade_solicitante' => $session['sess_codunidade'], //Busca somente as solicitações que fazem parte da unidade
         ]);
 
         $query->andFilterWhere(['like', 'solic_titulo', $this->solic_titulo])
