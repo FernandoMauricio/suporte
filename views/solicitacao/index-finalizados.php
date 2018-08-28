@@ -21,7 +21,7 @@ use app\models\base\Usuario;
 $this->title = 'Listagem de Suportes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="solicitacao-index">
+<div class="solicitacao-index-finalizados">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -62,6 +62,21 @@ $gridColumns = [
     [
         'attribute'=>'solic_id', 
         'width'=>'3%',
+    ],
+
+    [
+        'attribute' => 'solic_unidade_solicitante',
+        'label' => 'Unidade',
+        'width' => '8%',
+        'value'=>function ($model, $key, $index, $widget) { 
+            return $model->solic_unidade_solicitante != NULL ? $model->unidade->uni_nomeabreviado : '';
+        },
+        'filterType'=>GridView::FILTER_SELECT2,
+        'filter'=>ArrayHelper::map(Unidade::find()->select(['uni_codunidade', 'uni_nomeabreviado'])->asArray()->all(), 'uni_codunidade', 'uni_nomeabreviado'),
+        'filterInputOptions'=>['placeholder'=>'Unidade...'],
+        'filterWidgetOptions'=>[
+            'pluginOptions'=>['allowClear'=>true],
+        ],
     ],
 
     [
@@ -188,7 +203,7 @@ $gridColumns = [
     ],
 
     ['class' => 'yii\grid\ActionColumn',
-        'template' => '{view} {finalizar-suporte-pelo-tecnico}',
+        'template' => '{view}',
         'contentOptions' => ['style' => 'width: 10%'],
         'buttons' => [
         //VISUALIZAR
@@ -197,20 +212,6 @@ $gridColumns = [
                 'title' => Yii::t('app', 'Detalhes do suporte'),
                 'class'=>'btn btn-primary btn-xs',
             ]);
-        },
-        //FINALIZAR SUPORTE
-        'finalizar-suporte-pelo-tecnico' => function ($url, $model) {
-            if($model->situacao_id != 6 && $model->situacao_id != 7) {
-            return Html::a('<span class="glyphicon glyphicon-ok"></span> Finalizar' , $url, [
-                    'title' => Yii::t('app', 'Finalizar'),
-                    'class'=>'btn btn-success btn-xs',
-                    'data' => [
-                                'confirm' => 'Você tem certeza que deseja <b>finalizar</b> esse suporte?',
-                                'method' => 'post',
-                            ],
-            ]); }else{
-                '';
-            } 
         },
         ],
     ],
@@ -245,7 +246,7 @@ $gridColumns = [
     'beforeHeader'=>[
         [
             'columns'=>[
-                ['content'=>'Detalhes da Listagem dos Suportes', 'options'=>['colspan'=>11, 'class'=>'text-center warning']], 
+                ['content'=>'Detalhes da Listagem dos Suportes', 'options'=>['colspan'=>12, 'class'=>'text-center warning']], 
                 ['content'=>'Área de Ações', 'options'=>['colspan'=>1, 'class'=>'text-center warning']], 
             ],
         ]

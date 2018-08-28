@@ -106,42 +106,8 @@ class SolicitacaoController extends Controller
     {
         $this->layout = 'main-full';
 
-        $searchModel = new SolicitacaoAdmSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index-adm', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Lists all Solicitacao models.
-     * @return mixed
-     */
-    public function actionIndexFinalizados()
-    {
-        $this->layout = 'main-full';
-
-        $searchModel = new SolicitacaoFinalizadaSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index-finalizados', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-    }
-
-    /**
-     * Lists all Solicitacao models.
-     * @return mixed
-     */
-    public function actionIndex()
-    {
-        $this->layout = 'main-full';
-
         $session = Yii::$app->session;
-        $searchModel = new SolicitacaoSearch();
+        $searchModel = new SolicitacaoAdmSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->sort = ['defaultOrder' => ['solic_id'=>SORT_DESC]];
 
@@ -183,14 +149,48 @@ class SolicitacaoController extends Controller
             //Envia e-mail para o solicitante
             Yii::$app->runAction('email/enviar-email-solicitante', ['id' => $model->solic_id]);
             Yii::$app->session->setFlash('info', '<b>SUCESSO!</b> Informações Atualizadas!</b>');
-            return $this->redirect(['index']);
+            return $this->redirect(['index-adm']);
         }
-        return $this->render('index', [
+        return $this->render('index-adm', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
+
+    /**
+     * Lists all Solicitacao models.
+     * @return mixed
+     */
+    public function actionIndexFinalizados()
+    {
+        $this->layout = 'main-full';
+
+        $searchModel = new SolicitacaoFinalizadaSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index-finalizados', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Lists all Solicitacao models.
+     * @return mixed
+     */
+    public function actionIndex()
+    {
+        $this->layout = 'main-full';
+
+        $searchModel = new SolicitacaoSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
     /**
      * Displays a single Solicitacao model.
      * @param integer $id

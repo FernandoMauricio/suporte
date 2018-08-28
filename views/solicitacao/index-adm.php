@@ -7,6 +7,7 @@ use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use kartik\grid\GridView;
 use kartik\date\DatePicker;
+use yii\bootstrap\Collapse;
 
 use app\models\solicitacao\Solicitacao;
 use app\models\base\Sistemas;
@@ -21,10 +22,23 @@ use app\models\base\Usuario;
 $this->title = 'Listagem de Suportes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="solicitacao-indexadm">
+<div class="solicitacao-index-adm">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <?php
+        echo Collapse::widget([
+            'items' => [
+                // equivalent to the above
+                [
+                    'label' => 'Pesquisa Avançada',
+                    'content' => $this->render('_search', ['model' => $searchModel]),
+                    // open its content by default
+                    //'options' => ['class' => 'panel panel-primary']
+                ],
+            ]
+        ]);
+    ?>
 
     <p>
         <?= Html::button('Nova Solicitação de Suporte', ['value'=> Url::to(['gerar-suporte']), 'class' => 'btn btn-success', 'id'=>'modalButton']) ?>
@@ -147,6 +161,7 @@ $gridColumns = [
     //'solic_desc_serv:ntext',
     //'solic_data_solicitacao',
     //'solic_data_finalizacao',
+
     [
         'class'=>'kartik\grid\EditableColumn',
         'attribute'=>'solic_data_prevista',
@@ -157,6 +172,7 @@ $gridColumns = [
         'filter'=> DatePicker::widget([
         'model' => $searchModel, 
         'attribute' => 'solic_data_prevista',
+        'removeButton' => false,
         'pluginOptions' => [
             'autoclose'=>true,
             'format' => 'yyyy-mm-dd',

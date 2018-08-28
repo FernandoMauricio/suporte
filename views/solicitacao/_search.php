@@ -15,15 +15,12 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'solic_id') ?>
+<div class="panel-body">
+    <div class="row">
+        <div class="col-md-2"><?= $form->field($model, 'solic_patrimonio') ?></div>
+    </div>
+</div>
 
-    <?= $form->field($model, 'solic_titulo') ?>
-
-    <?= $form->field($model, 'solic_patrimonio') ?>
-
-    <?= $form->field($model, 'solic_desc_equip') ?>
-
-    <?= $form->field($model, 'solic_desc_serv') ?>
 
     <?php // echo $form->field($model, 'solic_unidade_solicitante') ?>
 
@@ -46,8 +43,8 @@ use yii\widgets\ActiveForm;
     <?php // echo $form->field($model, 'situacao_id') ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
+        <?= Html::submitButton('Pesquisar', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('Limpar', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>
