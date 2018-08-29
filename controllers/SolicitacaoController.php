@@ -40,6 +40,21 @@ class SolicitacaoController extends Controller
         ];
     }
 
+    //Localiza os Usuários vinculados as Unidades
+    public function actionColaboradores() {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $parents = $_POST['depdrop_parents'];
+            if ($parents != null) {
+                $cat_id = $parents[0];
+                $out = Colaborador::getColaboradorSubCat($cat_id);
+                echo Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output'=>'', 'selected'=>'']);
+    }
+
     public function actionFinalizarSuporte($id) 
     {
         $session = Yii::$app->session;
@@ -312,7 +327,6 @@ class SolicitacaoController extends Controller
         
         $sistemas = Sistemas::find()->orderBy('sist_descricao')->all();
         $unidades = Unidade::find()->orderBy('uni_nomeabreviado')->all();
-        $usuarios = Usuario::find()->where(['usu_codsituacao' => 1, 'usu_codtipo' => 2])->orderBy('usu_nomeusuario')->all();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             ///--------salva os anexos
@@ -338,7 +352,6 @@ class SolicitacaoController extends Controller
             'model' => $model,
             'sistemas' => $sistemas,
             'unidades' => $unidades,
-            'usuarios' => $usuarios,
         ]);
     }
 

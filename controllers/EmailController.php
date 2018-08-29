@@ -130,7 +130,7 @@ class EmailController extends Controller
 
         Yii::$app->mailer->compose()
         ->setFrom(['sistema.gic@am.senac.br' => 'Suporte GTI'])
-        ->setTo(['fernando.mauricio@am.senac.br', 'rui.alencar@am.senac.br', 'rafael.cunha@am.senac.br', 'laercio.filho@am.senac.br', 'endrio.medeiros@am.senac.br', 'mackson.silva@am.senac.br'])
+        ->setTo(['gti-suporte@am.senac.br', ])
         ->setSubject('Suporte #'.$model->solic_id.': ('.$model->situacao->sit_descricao.') - '.$model->solic_titulo.'')
         ->setTextBody('MENSAGEM AUTOMÁTICA. POR FAVOR, NÃO RESPONDA ESSE E-MAIL')
         ->setHtmlBody('
@@ -187,6 +187,12 @@ class EmailController extends Controller
     {
         $model = $this->findModel($id);
 
+        $emailSolicitante = Email::find()
+        ->select('emus_email')
+        ->joinWith('usuario')
+        ->where(['usu_codusuario' => $model->solic_usuario_solicitante])
+        ->one();
+
         $header = '
         <p><b>MENSAGEM AUTOMÁTICA. POR FAVOR, NÃO RESPONDA ESSE E-MAIL.</b><br>
         Para isso, utilize o módulo de suporte do Portal Senac para responder este e-mail.<br> _<em><i></i></em>__<em>_</em>____________________________________________________________________________________________________</p>
@@ -209,7 +215,7 @@ class EmailController extends Controller
 
         Yii::$app->mailer->compose()
         ->setFrom(['sistema.gic@am.senac.br' => 'Suporte GTI'])
-        ->setTo(['fernando.mauricio@am.senac.br', 'rui.alencar@am.senac.br', 'rafael.cunha@am.senac.br', 'laercio.filho@am.senac.br', 'endrio.medeiros@am.senac.br', 'mackson.silva@am.senac.br'])
+        ->setTo(['gti-suporte@am.senac.br', $emailSolicitante->emus_email])
         ->setSubject('Suporte #'.$model->solic_id.': ('.$model->situacao->sit_descricao.') - '.$model->solic_titulo.'')
         ->setTextBody('MENSAGEM AUTOMÁTICA. POR FAVOR, NÃO RESPONDA ESSE E-MAIL')
         ->setHtmlBody('

@@ -18,7 +18,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'sistemas' => $sistemas,
         'unidades' => $unidades,
-        'usuarios' => $usuarios,
     ]) ?>
 
 </div>

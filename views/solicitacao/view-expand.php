@@ -19,7 +19,7 @@ use yii\bootstrap\Modal;
             </h4><br />
 
             <h5>
-                <span class="pull-left"><b>Data da solicitação: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= date('d/m/Y', strtotime($model->solic_data_solicitacao)); ?></span></small></span>
+                <span class="pull-left"><b>Data da Solicitação: </b><small><span class="label label-primary" style="font-size: 100%;font-weight:normal"><?= date('d/m/Y', strtotime($model->solic_data_solicitacao)); ?></span></small></span>
                 <span class="pull-right"><b>Situação: </b><small><span class="label label-warning" style="font-size: 100%;font-weight:normal"><?= $model->situacao->sit_descricao; ?></span></small></span>
             </h5><br />
 

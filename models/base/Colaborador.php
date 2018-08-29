@@ -55,11 +55,11 @@ class Colaborador extends \yii\db\ActiveRecord
         return [
             [['col_codusuario', 'col_codunidade', 'col_coddepartamento', 'col_codcargo', 'col_codsituacao'], 'required'],
             [['col_codusuario', 'col_codunidade', 'col_coddepartamento', 'col_codcargo', 'col_codsituacao'], 'integer'],
-            [['col_codcargo'], 'exist', 'skipOnError' => true, 'targetClass' => CargosCar::className(), 'targetAttribute' => ['col_codcargo' => 'car_codcargo']],
-            [['col_coddepartamento'], 'exist', 'skipOnError' => true, 'targetClass' => DepartamentoDep::className(), 'targetAttribute' => ['col_coddepartamento' => 'dep_coddepartamento']],
-            [['col_codsituacao'], 'exist', 'skipOnError' => true, 'targetClass' => SituacaosistemaSitsis::className(), 'targetAttribute' => ['col_codsituacao' => 'sitsis_codsituacao']],
-            [['col_codunidade'], 'exist', 'skipOnError' => true, 'targetClass' => UnidadeUni::className(), 'targetAttribute' => ['col_codunidade' => 'uni_codunidade']],
-            [['col_codusuario'], 'exist', 'skipOnError' => true, 'targetClass' => UsuarioUsu::className(), 'targetAttribute' => ['col_codusuario' => 'usu_codusuario']],
+            [['col_codcargo'], 'exist', 'skipOnError' => true, 'targetClass' => Cargos::className(), 'targetAttribute' => ['col_codcargo' => 'car_codcargo']],
+            [['col_coddepartamento'], 'exist', 'skipOnError' => true, 'targetClass' => Departamento::className(), 'targetAttribute' => ['col_coddepartamento' => 'dep_coddepartamento']],
+            [['col_codsituacao'], 'exist', 'skipOnError' => true, 'targetClass' => Situacao::className(), 'targetAttribute' => ['col_codsituacao' => 'sitsis_codsituacao']],
+            [['col_codunidade'], 'exist', 'skipOnError' => true, 'targetClass' => Unidade::className(), 'targetAttribute' => ['col_codunidade' => 'uni_codunidade']],
+            [['col_codusuario'], 'exist', 'skipOnError' => true, 'targetClass' => Usuario::className(), 'targetAttribute' => ['col_codusuario' => 'usu_codusuario']],
         ];
     }
 
@@ -76,6 +76,25 @@ class Colaborador extends \yii\db\ActiveRecord
             'col_codcargo' => 'Col Codcargo',
             'col_codsituacao' => 'Col Codsituacao',
         ];
+    }
+
+    //Busca dados dos eixos vinculados aos segmentos
+    public static function getColaboradorSubCat($cat_id) {
+        $data=\app\models\base\Colaborador::find()
+        ->innerJoinWith('usuario', false)
+        ->where(['col_codunidade'=>$cat_id, 'usu_codsituacao' => 1, 'usu_codtipo' => 2])
+        ->orderBy(['usu_nomeusuario'=>SORT_ASC])
+        ->select(['col_codusuario AS id','usu_nomeusuario AS name'])->asArray()->all();
+
+        return $data;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUsuario()
+    {
+        return $this->hasOne(Usuario::className(), ['usu_codusuario' => 'col_codusuario']);
     }
 
     /**
@@ -108,14 +127,6 @@ class Colaborador extends \yii\db\ActiveRecord
     public function getColCodunidade()
     {
         return $this->hasOne(UnidadeUni::className(), ['uni_codunidade' => 'col_codunidade']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getColCodusuario()
-    {
-        return $this->hasOne(UsuarioUsu::className(), ['usu_codusuario' => 'col_codusuario']);
     }
 
     /**

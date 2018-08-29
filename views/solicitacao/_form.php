@@ -5,6 +5,9 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
 use kartik\file\FileInput;
+use kartik\depdrop\DepDrop;
+use yii\helpers\Url;
+use yii\helpers\Json;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\solicitacao\Solicitacao */
@@ -29,23 +32,26 @@ $session = Yii::$app->session;
                 '<div class="col-md-6">'
                     .$form->field($model, 'solic_unidade_solicitante')->widget(Select2::classname(), [
                         'data' =>  $data_unidades,
-                        'options' => ['placeholder' => 'Selecione a Unidade...'],
+                        'options' => ['id'=>'cat-id', 'placeholder' => 'Selecione a Unidade...'],
                         'pluginOptions' => [
                                 'allowClear' => true
                             ],
                         ]). '</div>' 
                 : '' ?>
             <!-- Técnicos da GTI poderão abrir chamados para outros usuários-->
-            <?php $data_usuarios = ArrayHelper::map($usuarios, 'usu_codusuario', 'usu_nomeusuario'); ?>
             <?= $session['sess_codunidade'] == 1 ? 
                 '<div class="col-md-6">'
-                    .$form->field($model, 'solic_usuario_solicitante')->widget(Select2::classname(), [
-                        'data' =>  $data_usuarios,
-                        'options' => ['placeholder' => 'Selecione o Usuário...'],
-                        'pluginOptions' => [
-                                'allowClear' => true
-                            ],
-                        ]). '</div>' 
+                    .$form->field($model, 'solic_usuario_solicitante')->widget(DepDrop::classname(), [
+                        'type'=>DepDrop::TYPE_SELECT2,
+                        'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+                        'options'=>['id'=>'subcat-id'],
+                        'pluginOptions'=>[
+                            'depends'=>['cat-id'],
+                            'placeholder'=>'Selecione o Usuário...',
+                            'initialize' => true,
+                            'url'=>Url::to(['/solicitacao/colaboradores'])
+                        ]
+                    ]). '</div>' 
                 : '' ?>
 
             <div class="col-md-6"><?= $form->field($model, 'solic_titulo')->textInput(['maxlength' => true]) ?></div>
