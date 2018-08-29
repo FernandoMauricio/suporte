@@ -89,6 +89,14 @@ class Forum extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getUsuarioForum()
+    {
+        return $this->hasOne(Usuario::className(), ['usu_codusuario' => 'for_usuario_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getTecnicoForum()
     {
         return $this->hasOne(Usuario::className(), ['usu_codusuario' => 'for_usuario_suporte']);

@@ -55,36 +55,37 @@ class SolicitacaoController extends Controller
         echo Json::encode(['output'=>'', 'selected'=>'']);
     }
 
-    public function actionFinalizarSuporte($id) 
+    public function actionFinalizarSuporteAutomatico()
     {
-        $session = Yii::$app->session;
-        $model = $this->findModel($id);
-
         $connection = Yii::$app->db;
-        $connection->createCommand()
-        ->update('solicitacao', [
-            'solic_usuario_finalizacao' => $session['sess_nomeusuario'], 
-            'situacao_id' => 6, //Solicitação Finalizada
-            'solic_data_finalizacao' => date('Y-m-d H:i:s') 
-        ], ['solic_id' => $model->solic_id])
-        ->execute();
+        $forums = Forum::find()->select(['solicitacao_id', new \yii\db\Expression('DATE(for_data)')])
+        ->where(['situacao_id' => 7])
+        ->andWhere(['<=', 'for_data', new \yii\db\Expression('DATE(NOW()) - INTERVAL 3 DAY')])
+        ->all();
 
-        $connection->createCommand()
-        ->insert('forum', [
-            'solicitacao_id' => $model->solic_id,
-            'for_usuario_id' => $session['sess_codusuario'],
-            'for_data' => date('Y-m-d H:i'),
-            'situacao_id' => 6, //Solicitação Finalizada
-        ])
-        ->execute();
+        foreach ($forums as $forum) {
+            $connection->createCommand()
+            ->update('solicitacao', [
+                'solic_usuario_finalizacao' => 'Suporte GTI', 
+                'situacao_id' => 6, //Solicitação Finalizada
+                'solic_data_finalizacao' => date('Y-m-d H:i:s') 
+            ], 
+            ['solic_id' => $forum['solicitacao_id']])
+            ->execute();
 
-        //Envia e-mail a GTI informando a finalização do suporte pelo solicitante
-        Yii::$app->runAction('email/enviar-email-suporte-finalizado', ['id' => $model->solic_id]);
-        Yii::$app->session->setFlash('success', '<b>SUCESSO! </b> Suporte: ' . '<b>' .$model->solic_id. '</b> foi <b>finalizado!</b>');
-        return $this->redirect(['index']);
+            $connection->createCommand()
+            ->insert('forum', [
+                'solicitacao_id' => $forum['solicitacao_id'],
+                'for_usuario_id' => 1,  //Suporte GTI
+                'for_data' => date('Y-m-d H:i'),
+                'situacao_id' => 6, //Solicitação Finalizada
+                'for_mensagem' => 'Este chamado foi encerrado automaticamente após 3 dias da finalização do técnico.'
+            ])
+            ->execute();
+        }
     }
 
-    public function actionFinalizarSuportePeloUsuario($id) 
+    public function actionFinalizarSuportePeloUsuario($id)
     {
         $session = Yii::$app->session;
         $model = $this->findModel($id);
@@ -139,7 +140,7 @@ class SolicitacaoController extends Controller
         //Envia e-mail a GTI informando a finalização do suporte pelo técnico
         Yii::$app->runAction('email/enviar-email-suporte-finalizado-pelo-tecnico', ['id' => $model->solic_id]);
         Yii::$app->session->setFlash('success', '<b>SUCESSO! </b> Suporte: ' . '<b>' .$model->solic_id. '</b> foi <b>finalizado!</b>');
-        return $this->redirect(['index']);
+        return $this->redirect(['index-adm']);
     }
 
     /**
