@@ -188,7 +188,7 @@ $gridColumns = [
     ],
 
     ['class' => 'yii\grid\ActionColumn',
-        'template' => '{view} {finalizar-suporte-pelo-tecnico}',
+        'template' => '{view} {finalizar-suporte-pelo-usuario}',
         'contentOptions' => ['style' => 'width: 10%'],
         'buttons' => [
         //VISUALIZAR
@@ -198,9 +198,9 @@ $gridColumns = [
                 'class'=>'btn btn-primary btn-xs',
             ]);
         },
-        //FINALIZAR SUPORTE
-        'finalizar-suporte-pelo-tecnico' => function ($url, $model) {
-            if($model->situacao_id != 6 && $model->situacao_id != 7) {
+        //FINALIZAR SUPORTE PELO USUARIO
+        'finalizar-suporte-pelo-usuario' => function ($url, $model) {
+            if($model->situacao_id != 6) {
             return Html::a('<span class="glyphicon glyphicon-ok"></span> Finalizar' , $url, [
                     'title' => Yii::t('app', 'Finalizar'),
                     'class'=>'btn btn-success btn-xs',

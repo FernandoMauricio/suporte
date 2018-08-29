@@ -69,6 +69,35 @@ class SolicitacaoController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionFinalizarSuportePeloUsuario($id) 
+    {
+        $session = Yii::$app->session;
+        $model = $this->findModel($id);
+
+        $connection = Yii::$app->db;
+        $connection->createCommand()
+        ->update('solicitacao', [
+            'solic_usuario_finalizacao' => $session['sess_nomeusuario'], 
+            'situacao_id' => 6, //Solicitação Finalizada
+            'solic_data_finalizacao' => date('Y-m-d H:i:s') 
+        ], ['solic_id' => $model->solic_id])
+        ->execute();
+
+        $connection->createCommand()
+        ->insert('forum', [
+            'solicitacao_id' => $model->solic_id,
+            'for_usuario_id' => $session['sess_codusuario'],
+            'for_data' => date('Y-m-d H:i'),
+            'situacao_id' => 6, //Solicitação Finalizada
+        ])
+        ->execute();
+
+        //Envia e-mail a GTI informando a finalização do suporte pelo solicitante
+        Yii::$app->runAction('email/enviar-email-suporte-finalizado-pelo-usuario', ['id' => $model->solic_id]);
+        Yii::$app->session->setFlash('success', '<b>SUCESSO! </b> Suporte: ' . '<b>' .$model->solic_id. '</b> foi <b>finalizado!</b>');
+        return $this->redirect(['index']);
+    }
+
     public function actionFinalizarSuportePeloTecnico($id) 
     {
         $session = Yii::$app->session;
@@ -92,8 +121,8 @@ class SolicitacaoController extends Controller
         ])
         ->execute();
 
-        //Envia e-mail a GTI informando a finalização do suporte pelo solicitante
-        Yii::$app->runAction('email/enviar-email-suporte-finalizado', ['id' => $model->solic_id]);
+        //Envia e-mail a GTI informando a finalização do suporte pelo técnico
+        Yii::$app->runAction('email/enviar-email-suporte-finalizado-pelo-tecnico', ['id' => $model->solic_id]);
         Yii::$app->session->setFlash('success', '<b>SUCESSO! </b> Suporte: ' . '<b>' .$model->solic_id. '</b> foi <b>finalizado!</b>');
         return $this->redirect(['index']);
     }
