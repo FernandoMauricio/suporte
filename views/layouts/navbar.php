@@ -30,7 +30,7 @@ echo Navx::widget([
         'items' => [
                 '<li class="dropdown-header">Área do Usuário</li>',
                 ['label' => 'Versões Anteriores', 'url' => ['/site/versao']],
-                ['label' => 'Sair', 'url' => 'http://portalsenac.am.senac.br/portal_senac/control_base_vermodulos/control_base_vermodulos.php'],
+                ['label' => 'Sair', 'url' => 'https://portalsenac.am.senac.br/portal_senac/control_base_vermodulos/control_base_vermodulos.php'],
             ],
         ],
     ],

@@ -243,6 +243,9 @@ $gridColumns = [
         'value'=>function ($model, $key, $index, $widget) { 
             return $model->situacao_id != NULL ? $model->situacao->sit_descricao : '' ;
         },
+        'readonly' => function($model, $key, $index, $widget) {
+            return ($model->situacao_id == 7); //Finalizado pelo técnico
+        },
         'filterType'=>GridView::FILTER_SELECT2,
         'filter'=>ArrayHelper::map(Situacao::find()->select(['id', 'sit_descricao'])->asArray()->all(), 'id', 'sit_descricao'),
         'filterInputOptions'=>['placeholder'=>'Situação...'],

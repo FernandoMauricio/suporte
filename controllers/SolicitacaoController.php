@@ -30,6 +30,8 @@ class SolicitacaoController extends Controller
      */
     public function behaviors()
     {
+        $this->AccessAllow(); //Irá ser verificado se o usuário está logado no sistema
+
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -149,9 +151,12 @@ class SolicitacaoController extends Controller
      */
     public function actionIndexAdm()
     {
-        $this->layout = 'main-full';
-
         $session = Yii::$app->session;
+        if($session['sess_codunidade'] != 1){
+            return $this->AccessoAdministrador();
+        }
+
+        $this->layout = 'main-full';
         $searchModel = new SolicitacaoAdmSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->sort = ['defaultOrder' => ['solic_id'=>SORT_DESC]];
@@ -276,7 +281,7 @@ class SolicitacaoController extends Controller
         $forum->for_usuario_id = $session['sess_codusuario'];
         $forum->for_data = date('Y-m-d H:i');
         
-        $situacao = Situacao::find()->all();
+        $situacao = Situacao::find()->where(['NOT IN', 'id', [6,7]])->all(); //6 - Solicitação Finalizada / 7 - Finalizado Pelo Técnico
 
         if ($forum->load(Yii::$app->request->post()) && $forum->save()) {
             ///--------salva os anexos
@@ -404,5 +409,28 @@ class SolicitacaoController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function AccessAllow()
+    {
+        $session = Yii::$app->session;
+        if (!isset($session['sess_codusuario']) 
+            && !isset($session['sess_codcolaborador']) 
+            && !isset($session['sess_codunidade']) 
+            && !isset($session['sess_nomeusuario']) 
+            && !isset($session['sess_coddepartamento']) 
+            && !isset($session['sess_codcargo']) 
+            && !isset($session['sess_cargo']) 
+            && !isset($session['sess_setor']) 
+            && !isset($session['sess_unidade']) 
+            && !isset($session['sess_responsavelsetor'])) 
+        {
+           return $this->redirect('https://portalsenac.am.senac.br');
+        }
+    }
+
+    public function AccessoAdministrador()
+    {
+        return $this->render('/site/acesso-negado');
     }
 }
