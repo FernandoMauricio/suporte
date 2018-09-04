@@ -51,9 +51,9 @@ class Solicitacao extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['solic_titulo', 'solic_desc_serv', 'solic_unidade_solicitante', 'solic_usuario_solicitante', 'solic_data_solicitacao', 'solic_tipo', 'situacao_id'], 'required'],
             [['solic_patrimonio', 'solic_unidade_solicitante', 'solic_usuario_solicitante', 'solic_usuario_suporte', 'solic_sistema_id', 'situacao_id'], 'integer'],
             [['solic_desc_serv'], 'string'],
-            [['solic_titulo', 'solic_desc_serv', 'solic_unidade_solicitante', 'solic_usuario_solicitante', 'solic_data_solicitacao', 'solic_tipo', 'situacao_id'], 'required'],
             [['solic_data_solicitacao', 'solic_data_prevista', 'solic_data_finalizacao', 'countDias'], 'safe'],
             [['solic_titulo'], 'string', 'max' => 100],
             [['solic_desc_equip', 'solic_usuario_finalizacao'], 'string', 'max' => 255],
@@ -61,7 +61,7 @@ class Solicitacao extends \yii\db\ActiveRecord
             [['solic_tipo'], 'string', 'max' => 50],
             [['solic_sistema_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sistemas::className(), 'targetAttribute' => ['solic_sistema_id' => 'id']],
             [['situacao_id'], 'exist', 'skipOnError' => true, 'targetClass' => Situacao::className(), 'targetAttribute' => ['situacao_id' => 'id']],
-            [['solic_patrimonio', 'solic_desc_equip'], 'required', 'when' => function ($model, $attribute) {
+            [['solic_desc_equip'], 'required', 'when' => function ($model, $attribute) {
                     return $model->solic_tipo=='Equipamentos';
                 }, 'whenClient' => "function (attribute, value) {
                     return $('#solicitacao-solic_tipo').val() == 'Equipamentos';

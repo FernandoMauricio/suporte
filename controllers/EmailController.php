@@ -204,7 +204,7 @@ class EmailController extends Controller
             <li><b>Solicitante</b>: '.ucwords(mb_strtolower($model->usuario->usu_nomeusuario)).' </li>
             <li><b>Situação</b>: '.$model->situacao->sit_descricao.' </li>
             <li><b>Prioridade</b>: '.$model->solic_prioridade.' </li>
-            <li><b>Categoria</b>: '.$model->categoriaSistema->sist_descricao.' </li>
+            <li><b>Categoria</b>: '.(!empty($model->categoriaSistema->sist_descricao)).' </li>
             <li><b>Tipo</b>: '.$model->solic_tipo.' </li>
         </ul>
         ';
