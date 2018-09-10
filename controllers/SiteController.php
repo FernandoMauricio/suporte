@@ -9,6 +9,7 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\solicitacao\Solicitacao;
 
 class SiteController extends Controller
 {
@@ -61,7 +62,17 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $aguardAtendimento = Solicitacao::find()->where(['situacao_id' => 1])->count();
+        $emProcesso = Solicitacao::find()->where(['situacao_id' => 2])->count();
+        $atrasados = Solicitacao::find()->where(['<', new \yii\db\Expression('DATEDIFF(solic_data_prevista, NOW())'), 0])->andWhere(['NOT IN', 'situacao_id', [6,7]])->count();
+        $finalizadosTecnico = Solicitacao::find()->where(['situacao_id' => 7])->count();
+
+        return $this->render('index', [
+            'emProcesso' => $emProcesso,
+            'aguardAtendimento' => $aguardAtendimento,
+            'atrasados' => $atrasados,
+            'finalizadosTecnico' => $finalizadosTecnico,
+        ]);
     }
 
     /**

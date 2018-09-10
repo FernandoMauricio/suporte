@@ -235,6 +235,7 @@ class SolicitacaoController extends Controller
 
         $searchModel = new SolicitacaoSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort = ['defaultOrder' => ['solic_id'=>SORT_DESC]];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
