@@ -69,11 +69,37 @@ class SiteController extends Controller
         $emProcesso = Solicitacao::find()->where(['situacao_id' => 2])->count();
         $atrasados = Solicitacao::find()->where(['<', new \yii\db\Expression('DATEDIFF(solic_data_prevista, NOW())'), 0])->andWhere(['NOT IN', 'situacao_id', [6,7]])->count();
         $finalizadosTecnico = Solicitacao::find()->where(['situacao_id' => 7])->count();
+
+        $sql = 'SELECT COUNT(*) / (SELECT count(*) FROM `solicitacao`) * 100 AS countAtendimento FROM `solicitacao` WHERE `situacao_id`=1';
+        $aguardAtendimentoPorcent = Solicitacao::findBySql($sql)->one();
+
+        $sql = 'SELECT COUNT(*) / (SELECT count(*) FROM `solicitacao`) * 100 AS countAtendimento FROM `solicitacao` WHERE `situacao_id`=2';
+        $emProcessoPorcent = Solicitacao::findBySql($sql)->one();
+
+        $sql = 'SELECT COUNT(*) / (SELECT count(*) FROM `solicitacao`) * 100 AS countAtendimento FROM `solicitacao` WHERE (DATEDIFF(solic_data_prevista, NOW()) < 0) AND (`situacao_id` NOT IN (6, 7))';
+        $atrasadosPorcent = Solicitacao::findBySql($sql)->one();
+
+        $sql = 'SELECT COUNT(*) / (SELECT count(*) FROM `solicitacao`) * 100 AS countAtendimento FROM `solicitacao` WHERE `situacao_id`=7';
+        $finalizadosTecnicoPorcent = Solicitacao::findBySql($sql)->one();
+
     }else{
         $aguardAtendimento = Solicitacao::find()->where(['situacao_id' => 1, 'solic_unidade_solicitante' => $session['sess_codunidade']])->count();
         $emProcesso = Solicitacao::find()->where(['situacao_id' => 2, 'solic_unidade_solicitante' => $session['sess_codunidade']])->count();
         $atrasados = Solicitacao::find()->where(['<', new \yii\db\Expression('DATEDIFF(solic_data_prevista, NOW())'), 0])->andWhere(['NOT IN', 'situacao_id', [6,7]])->andWhere(['solic_unidade_solicitante' => $session['sess_codunidade']])->count();
         $finalizadosTecnico = Solicitacao::find()->where(['situacao_id' => 7, 'solic_unidade_solicitante' => $session['sess_codunidade']])->count();  
+
+        $sql = 'SELECT COUNT(*) / (SELECT count(*) FROM `solicitacao`) * 100 AS countAtendimento FROM `solicitacao` WHERE `situacao_id`=1 AND `solic_unidade_solicitante` = '.$session['sess_codunidade'].'';
+        $aguardAtendimentoPorcent = Solicitacao::findBySql($sql)->one();
+
+        $sql = 'SELECT COUNT(*) / (SELECT count(*) FROM `solicitacao`) * 100 AS countAtendimento FROM `solicitacao` WHERE `situacao_id`=2 AND `solic_unidade_solicitante` = '.$session['sess_codunidade'].'';
+        $emProcessoPorcent = Solicitacao::findBySql($sql)->one();
+
+        $sql = 'SELECT COUNT(*) / (SELECT count(*) FROM `solicitacao`) * 100 AS countAtendimento FROM `solicitacao` WHERE (DATEDIFF(solic_data_prevista, NOW()) < 0) AND (`situacao_id` NOT IN (6, 7)) AND `solic_unidade_solicitante` = '.$session['sess_codunidade'].'';
+        $atrasadosPorcent = Solicitacao::findBySql($sql)->one();
+
+        $sql = 'SELECT COUNT(*) / (SELECT count(*) FROM `solicitacao`) * 100 AS countAtendimento FROM `solicitacao` WHERE `situacao_id`=7 AND `solic_unidade_solicitante` = '.$session['sess_codunidade'].'';
+        $finalizadosTecnicoPorcent = Solicitacao::findBySql($sql)->one();
+
     }
 
         return $this->render('index', [
@@ -81,6 +107,10 @@ class SiteController extends Controller
             'aguardAtendimento' => $aguardAtendimento,
             'atrasados' => $atrasados,
             'finalizadosTecnico' => $finalizadosTecnico,
+            'aguardAtendimentoPorcent' => $aguardAtendimentoPorcent,
+            'emProcessoPorcent' => $emProcessoPorcent,
+            'atrasadosPorcent' => $atrasadosPorcent,
+            'finalizadosTecnicoPorcent' => $finalizadosTecnicoPorcent,
         ]);
     }
 

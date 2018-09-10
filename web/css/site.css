@@ -224,10 +224,19 @@ a.desc:after {
 
   .card-counter .count-numbers{
     position: absolute;
-    right: 35px;
+    right: 130px;
     top: 20px;
     font-size: 32px;
     display: block;
+  }
+
+  .card-counter .count-numbers-porcent{
+    position: absolute;
+    right: 35px;
+    top: 40px;
+    font-size: 16px;
+    display: block;
+    color: #d6d6d6;
   }
 
   .card-counter .count-name{

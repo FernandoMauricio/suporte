@@ -36,6 +36,7 @@ class Solicitacao extends \yii\db\ActiveRecord
 {
     public $countDias;
     public $file;
+    public $countAtendimento;
 
     /**
      * {@inheritdoc}

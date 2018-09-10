@@ -19,6 +19,7 @@ $this->title = 'Suporte GTI';
       <div class="card-counter default">
         <i class="glyphicon glyphicon-inbox"></i>
         <span class="count-numbers"><?= $aguardAtendimento ?></span>
+        <span class="count-numbers-porcent">(<?= number_format($aguardAtendimentoPorcent['countAtendimento'], 2, ',', ' ')  . '%'; ?>)</span>
         <span class="count-name">Aguardando Atend.</span>
       </div>
     </div>
@@ -26,6 +27,7 @@ $this->title = 'Suporte GTI';
       <div class="card-counter primary">
         <i class="glyphicon glyphicon-tasks"></i>
         <span class="count-numbers"><?= $emProcesso ?></span>
+        <span class="count-numbers-porcent">(<?= number_format($emProcessoPorcent['countAtendimento'], 2, ',', ' ')  . '%'; ?>)</span>
         <span class="count-name">Em Processo</span>
       </div>
     </div>
@@ -33,6 +35,7 @@ $this->title = 'Suporte GTI';
       <div class="card-counter danger">
         <i class="glyphicon glyphicon-warning-sign"></i>
         <span class="count-numbers"><?= $atrasados ?></span>
+        <span class="count-numbers-porcent">(<?= number_format($atrasadosPorcent['countAtendimento'], 2, ',', ' ')  . '%'; ?>)</span>
         <span class="count-name">Atrasados</span>
       </div>
     </div>
@@ -40,22 +43,12 @@ $this->title = 'Suporte GTI';
       <div class="card-counter success">
         <i class="glyphicon glyphicon-ok"></i>
         <span class="count-numbers"><?= $finalizadosTecnico ?></span>
+        <span class="count-numbers-porcent">(<?= number_format($finalizadosTecnicoPorcent['countAtendimento'], 2, ',', ' ')  . '%'; ?>)</span>
         <span class="count-name">Finaliz. Técnico</span>
       </div>
     </div>
 </div>
 </div>
-<!-- <div class="body-content">
-    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
-        <div class="card-header">Header</div>
-            <div class="card-body">
-                <h5 class="card-title">Primary card title</h5>
-                <p class="card-text">Quick sample text to create the card title and make up the body of the card's content.</p>
-            </div>
-        </div>
-    </div>
-</div>
- -->
 <!--         <div class="body-content">
             <div class="panel panel-primary">
                 <div class="panel-heading"><i class="glyphicon glyphicon-star-empty"></i> O que há de novo? - Versão 1.0 - Publicado em 03/09/2018</div>
