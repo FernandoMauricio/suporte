@@ -199,12 +199,14 @@ class EmailController extends Controller
         ';
         $titulo = '<h1>Suporte #'.$model->solic_id.': (<b style="color: #d35400"">'.$model->situacao->sit_descricao.'</b>) - '.$model->solic_titulo.'</h1>';
 
+        $categoriaSistema = !empty($model->categoriaSistema->sist_descricao) ? $model->categoriaSistema->sist_descricao : '-';
+
         $alteracoes = '
         <ul style="line-height:1.4em">
             <li><b>Solicitante</b>: '.ucwords(mb_strtolower($model->usuario->usu_nomeusuario)).' </li>
             <li><b>Situação</b>: '.$model->situacao->sit_descricao.' </li>
             <li><b>Prioridade</b>: '.$model->solic_prioridade.' </li>
-            <li><b>Categoria</b>: '.(!empty($model->categoriaSistema->sist_descricao)).' </li>
+            <li><b>Categoria</b>: '.$categoriaSistema.' </li>
             <li><b>Tipo</b>: '.$model->solic_tipo.' </li>
         </ul>
         ';

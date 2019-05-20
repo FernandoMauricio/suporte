@@ -66,7 +66,7 @@ class SiteController extends Controller
         if($session['sess_codunidade'] == 1){ //Se for da GTI
 
         $aguardAtendimento = Solicitacao::find()->where(['situacao_id' => 1])->count();
-        $emProcesso = Solicitacao::find()->where(['situacao_id' => 2])->count();
+        $emProcesso = Solicitacao::find()->where(['IN', 'situacao_id', [2,3,4,5,8]])->count();
         $atrasados = Solicitacao::find()->where(['<', new \yii\db\Expression('DATEDIFF(solic_data_prevista, NOW())'), 0])->andWhere(['NOT IN', 'situacao_id', [6,7]])->count();
         $finalizadosTecnico = Solicitacao::find()->where(['situacao_id' => 7])->count();
 
