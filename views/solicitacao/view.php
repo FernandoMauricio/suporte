@@ -7,9 +7,9 @@ use yii\bootstrap\Modal;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\solicitacao\Solicitacao */
-
+$session = Yii::$app->session;
 $this->title = $model->solic_id;
-$this->params['breadcrumbs'][] = ['label' => 'Listagem de Suportes', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Listagem de Suportes', 'url' => $session['sess_codunidade'] == 1 ? ['index-adm'] : ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
