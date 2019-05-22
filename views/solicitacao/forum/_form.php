@@ -10,6 +10,7 @@ use kartik\file\FileInput;
 /* @var $this yii\web\View */
 /* @var $model app\models\Forum */
 /* @var $form yii\widgets\ActiveForm */
+$session = Yii::$app->session;
 ?>
 
 <div class="forum-form">
@@ -19,31 +20,29 @@ use kartik\file\FileInput;
 <?php echo $form->errorSummary($forum); ?> 
 
     <div class="row">
-        <div class="col-md-4">
-        	<?php $data_situacao = ArrayHelper::map($situacao, 'id', 'sit_descricao');
-        		echo $form->field($forum, 'situacao_id')->widget(Select2::classname(), [
-	                'data' =>  $data_situacao,
-	                'options' => ['placeholder' => 'Alterar situação... '],
-	                'pluginOptions' => [
-	                    'allowClear' => true
-	                ],
-	            ]); 
-            ?>
-        </div>
+        <?php $data_situacao = ArrayHelper::map($situacao, 'id', 'sit_descricao'); ?>
+        <?= $session['sess_codunidade'] == 1 ? 
+            '<div class="col-md-4">'. $form->field($forum, 'situacao_id')->widget(Select2::classname(), [
+                'data' =>  $data_situacao,
+                'options' => ['placeholder' => 'Alterar situação... '],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ]). '</div>' 
+            : '' ?>
 
-        <div class="col-md-3">
-        	<?= $form->field($forum, 'for_usuario_suporte')->widget(Select2::classname(), [
-	                'data' =>  [219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'],
-	                'options' => ['placeholder' => 'Alterar técnico... '],
-	                'pluginOptions' => [
-	                    'allowClear' => true
-	                ],
-	            ]); 
-            ?>
-        </div>
+        <?= $session['sess_codunidade'] == 1 ? 
+            '<div class="col-md-3">'. $form->field($forum, 'for_usuario_suporte')->widget(Select2::classname(), [
+                    'data' =>  [219 => 'Endrio Medeiros', 129 => 'Fernando Mauricio',  94 => 'Laércio Varela', 205 => 'Mackson Silva', 369 => 'Rafael Cunha'],
+                    'options' => ['placeholder' => 'Alterar técnico... '],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                    ],
+                ]). '</div>' 
+            : '' ?>
 
-        <div class="col-md-3">
-        	<?= $form->field($forum, 'for_data_prevista')->widget(DateControl::classname(), [
+        <?= $session['sess_codunidade'] == 1 ? 
+            '<div class="col-md-3">'. $form->field($forum, 'for_data_prevista')->widget(DateControl::classname(), [
                     'type'=>DateControl::FORMAT_DATE,
                     'ajaxConversion'=>false,
                     'widgetOptions' => [
@@ -52,10 +51,9 @@ use kartik\file\FileInput;
                             'autoclose' => true
                         ],
                     ]
-                ]); 
-            ?>
-        </div>
-
+                ]). '</div>' 
+            : '' ?>
+            
         <div class="col-md-2">
             <?= $form->field($forum, 'for_prioridade')->widget(Select2::classname(), [
                     'data' =>  ['Normal' => 'Normal', 'Priorizada' => 'Priorizada'],

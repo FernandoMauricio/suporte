@@ -70,6 +70,7 @@ class SolicitacaoAdmSearch extends Solicitacao
             'solic_data_finalizacao' => $this->solic_data_finalizacao,
             'solic_usuario_suporte' => $this->solic_usuario_suporte,
             'solic_sistema_id' => $this->solic_sistema_id,
+            'situacao_id' => $this->situacao_id,
         ]);
 
         $query->andFilterWhere(['NOT IN', 'situacao_id', 6]); //Suportes Finalizados pelo solicitante não aparecerão
