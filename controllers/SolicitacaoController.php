@@ -197,7 +197,7 @@ class SolicitacaoController extends Controller
             // return ajax json encoded response and exit
             echo $out;
             //Envia e-mail para o solicitante
-            Yii::$app->runAction('email/enviar-email-solicitante', ['id' => $model->solic_id]);
+            Yii::$app->runAction('email/enviar-email-solicitante-index', ['id' => $model->solic_id]);
             Yii::$app->session->setFlash('info', '<b>SUCESSO!</b> Informações Atualizadas!</b>');
             return $this->redirect(['index-adm']);
         }
