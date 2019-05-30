@@ -305,6 +305,10 @@ class SolicitacaoController extends Controller
                 $model->save();
             }
 
+            //Envia e-mail a ao usuário uo ao técnico informando algum atualização
+            $session['sess_codusuario'] != $model->solic_usuario_solicitante ? Yii::$app->runAction('email/enviar-email-solicitante', ['id' => $model->solic_id]) : Yii::$app->runAction('email/enviar-email-tecnico', ['id' => $model->solic_id]);
+            
+
             Yii::$app->session->setFlash('success', '<b>SUCESSO! </b> Suporte Atualizado!');
                 return $this->redirect(['view', 'id' => $model->solic_id]);
             }

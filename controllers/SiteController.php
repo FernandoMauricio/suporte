@@ -114,6 +114,11 @@ class SiteController extends Controller
         ]);
     }
 
+    public function actionVersao()
+    {
+        return $this->render('versao');
+    }
+    
     /**
      * Login action.
      *

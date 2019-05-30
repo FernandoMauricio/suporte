@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
 use kartik\datecontrol\DateControl;
 use kartik\file\FileInput;
+use dosamigos\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Forum */
@@ -68,7 +69,12 @@ $session = Yii::$app->session;
     </div>
 
     <div class="row">
-        <div class="col-md-12"><?= $form->field($forum, 'for_mensagem')->textarea(['rows' => 6]) ?></div>
+        <div class="col-md-12">
+            <?= $form->field($forum, 'for_mensagem')->widget(CKEditor::className(), [
+                'options' => ['rows' => 6],
+                'preset' => 'basic'
+            ]) ?>
+        </div>
     </div>
 
     <div class="row">
