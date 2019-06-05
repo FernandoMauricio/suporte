@@ -61,7 +61,9 @@ class SolicitacaoController extends Controller
     {
         $connection = Yii::$app->db;
         $forums = Forum::find()->select(['solicitacao_id', new \yii\db\Expression('DATE(for_data)')])
-        ->where(['situacao_id' => 7])
+        ->innerJoinWith('solicitacao')
+        ->where(['forum.situacao_id' => 7])
+        ->andWhere(['solicitacao.situacao_id' => 7])
         ->andWhere(['<=', 'for_data', new \yii\db\Expression('DATE(NOW()) - INTERVAL 3 DAY')])
         ->all();
 
@@ -72,7 +74,7 @@ class SolicitacaoController extends Controller
                 'situacao_id' => 6, //Solicitação Finalizada
                 'solic_data_finalizacao' => date('Y-m-d H:i:s') 
             ], 
-            ['solic_id' => $forum['solicitacao_id']])
+            ['solic_id' => $forum['solicitacao_id'], 'situacao_id' => 7])
             ->execute();
 
             $connection->createCommand()
