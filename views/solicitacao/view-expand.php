@@ -88,7 +88,7 @@ use yii\bootstrap\Modal;
                                 $result = "";
                                 foreach ($files as $index => $file) {
                                 $nameFicheiro = substr($file, strrpos($file, '/') + 1); 
-                                    $result .= Html::a($nameFicheiro, Url::base().'/uploads/solicitacoes/'. $nameFicheiro, ['target'=>'_blank', 'data-pjax'=>"0"]) . "<br />"; 
+                                    $result .= Html::a($nameFicheiro, Url::base().'/uploads/solicitacoes/'.$model->solic_id.'/'.$nameFicheiro, ['target'=>'_blank', 'data-pjax'=>"0"]) . "<br />"; 
                                 }
                                 return $result;
                             }
