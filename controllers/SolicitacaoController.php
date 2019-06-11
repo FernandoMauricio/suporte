@@ -200,6 +200,8 @@ class SolicitacaoController extends Controller
             echo $out;
             //Envia e-mail para o solicitante
             Yii::$app->runAction('email/enviar-email-solicitante-index', ['id' => $model->solic_id]);
+            //Envia e-mail para o técnico
+            Yii::$app->runAction('email/enviar-email-tecnico-index', ['id' => $model->solic_id]);
             Yii::$app->session->setFlash('info', '<b>SUCESSO!</b> Informações Atualizadas!</b>');
             return $this->redirect(['index-adm']);
         }

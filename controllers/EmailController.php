@@ -110,6 +110,81 @@ class EmailController extends Controller
         ->send();
     }
 
+    public function actionEnviarEmailTecnicoIndex($id)
+    {
+        $model = $this->findModel($id);
+
+        $posted = current($_POST['Solicitacao']);
+
+        $emailSolicitante = Email::find()
+        ->select('emus_email')
+        ->joinWith('usuario')
+        ->where(['usu_codusuario' => $model->solic_usuario_suporte])
+        ->one();
+
+        $header = '
+        <p><b>MENSAGEM AUTOMÁTICA. POR FAVOR, NÃO RESPONDA ESSE E-MAIL.</b><br>
+        Para isso, utilize o módulo de suporte do Portal Senac para responder este e-mail.<br> _<em><i></i></em>__<em>_</em>____________________________________________________________________________________________________</p>
+        ';
+        $titulo = '<h1>Suporte #'.$model->solic_id.': (<b style="color: #d35400"">'.$model->situacao->sit_descricao.'</b>) - '.$model->solic_titulo.'</h1>';
+
+        $alteracoes = '';
+        
+        if (!empty($posted['solic_data_prevista'])) {
+            $alteracoes .= '
+            <ul style="line-height:1.4em">
+                <li><b> Data Prevista <span style="color: #d35400">Alterada para: </b></span>' .date('d/m/Y', strtotime($model->solic_data_prevista)).'</li>
+            </ul>
+            ';
+        }
+        if (!empty($posted['solic_tipo'])) {
+            $alteracoes .= '
+            <ul style="line-height:1.4em">
+                <li><b>Tipo <span style="color: #d35400">Alterado para: </b></span> '.$model->solic_tipo.'</li>
+            </ul>
+            ';
+        }
+
+        if (!empty($posted['solic_prioridade'])) {
+            $alteracoes .= '
+            <ul style="line-height:1.4em">
+                <li><b>Prioridade <span style="color: #d35400">Alterado para: </b></span> '.$model->solic_prioridade.'</li>
+            </ul>
+            ';
+        }
+        if (!empty($posted['solic_usuario_suporte'])) {
+            $alteracoes .= '
+            <ul style="line-height:1.4em">
+                <li><b>Técnico Responsável <span style="color: #d35400">Atribuído para: </b></span>: '.ucwords(mb_strtolower($model->tecnico->usu_nomeusuario)).' </li>
+            </ul>
+            ';
+        }
+        if (!empty($posted['situacao_id'])) {
+            $alteracoes .= '
+            <ul style="line-height:1.4em">
+                <li><b>Situação <span style="color: #d35400">Alterado para: </b></span> '.$model->situacao->sit_descricao.'</li>
+            </ul>
+            ';
+        }
+
+        $footer = '<p style="font-size:0.8em; font-style:italic"><b>ESTA É UMA MENSAGEM AUTOMÁTICA. POR FAVOR, NÃO RESPONDA ESSE E-MAIL.</b><br>
+                Você recebeu este e-mail porque você está inscrito na lista de e-mails do Portal Senac.</p></p>';
+
+        Yii::$app->mailer->compose()
+        ->setFrom(['sistema.gic@am.senac.br' => 'Suporte GTI'])
+        ->setTo($emailSolicitante->emus_email)
+        ->setSubject('Suporte #'.$model->solic_id.': ('.$model->situacao->sit_descricao.') - '.$model->solic_titulo.'')
+        ->setTextBody('MENSAGEM AUTOMÁTICA. POR FAVOR, NÃO RESPONDA ESSE E-MAIL')
+        ->setHtmlBody('
+            '.$header.'
+            '.$titulo.'
+            '.$alteracoes.'
+            <hr style="width:100%; height:1px; background:#ccc; border:0; margin:1.2em 0">
+            '.$footer.'
+        ')
+        ->send();
+    }
+
     public function actionEnviarEmailSolicitante($id)
     {
         $model = $this->findModel($id);
